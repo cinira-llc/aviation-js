@@ -1,2 +1,2 @@
 # aviation-js
-Cinira Aviation Library for JavaScript
+Cinira Aviation library for JavaScript

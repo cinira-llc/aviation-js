@@ -1,0 +1,85 @@
+{
+  "name": "@mattj65817/aviation-js",
+  "version": "1.0.0",
+  "description": "Cinira Aviation library for JavaScript",
+  "exports": {
+    ".": [
+      {
+        "browser": "./dist/cjs/index.js",
+        "import": "./dist/esm/index.js",
+        "require": "./dist/cjs/index.js",
+        "types": "./dist/types/index.d.ts"
+      },
+      "./dist/cjs/index.js"
+    ],
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "./dist"
+  ],
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mattj65817/aviation-js.git"
+  },
+  "scripts": {
+    "build": "tsc -p ./tsconfig.json && tsc -p ./tsconfig-cjs.json && tsc -p ./tsconfig-types.json",
+    "clean": "rm -rf ./build ./dist",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "eslint ./src",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "Matt Jensen <mjensen65816@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "@mattj65817/util-js": "^1.1.0",
+    "axios": "^1.6.2",
+    "axios-retry": "^3.9.1",
+    "immer": "^10.0.3",
+    "lodash": "^4.17.21",
+    "luxon": "^3.4.4",
+    "qs": "^6.11.2"
+  },
+  "devDependencies": {
+    "@mattj65817/test-js": "^1.1.1",
+    "@types/jest": "^29.5.8",
+    "@types/lodash": "^4.14.201",
+    "@types/luxon": "^3.3.4",
+    "@types/qs": "^6.9.10",
+    "@typescript-eslint/eslint-plugin": "^6.11.0",
+    "@typescript-eslint/parser": "^6.11.0",
+    "axios": "^1.6.2",
+    "axios-mock-adapter": "^1.22.0",
+    "eslint": "^8.53.0",
+    "eslint-config-prettier": "^9.0.0",
+    "jest": "^29.7.0",
+    "jest-junit": "^16.0.0",
+    "prettier": "^3.1.0",
+    "semantic-release": "^22.0.7",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.2.2"
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/github",
+      "@semantic-release/npm"
+    ]
+  },
+  "types": "./dist/types/index.d.ts",
+  "jest": {
+    "preset": "ts-jest",
+    "reporters": [
+      [
+        "jest-junit",
+        {
+          "outputDirectory": "./build/report",
+          "outputName": "test-results.xml"
+        }
+      ]
+    ]
+  }
+}

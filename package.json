@@ -47,6 +47,7 @@
     "typescript": "^5.3.3"
   },
   "peerDependencies": {
+    "immer": "^10.0.3",
     "lodash": "^4.17.21"
   },
   "release": {

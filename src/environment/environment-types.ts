@@ -30,7 +30,7 @@ export function isTemperature(val: unknown): val is Temperature {
  * Altitude variable.
  */
 interface Altitude {
-    name: typeof ALTITUDE[number];
+    variable: typeof ALTITUDE[number];
     unit: typeof ALTITUDE_UNIT[number];
 }
 
@@ -38,7 +38,7 @@ interface Altitude {
  * Temperature variable.
  */
 interface Temperature {
-    name: typeof TEMPERATURE[number];
+    variable: typeof TEMPERATURE[number];
     unit: typeof TEMPERATURE_UNIT[number];
 }
 

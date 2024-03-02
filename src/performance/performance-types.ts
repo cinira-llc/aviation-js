@@ -1,5 +1,17 @@
 import { freeze } from "immer";
 import _ from "lodash";
+import { Dimensions } from "@mattj65817/util-js";
+
+/**
+ * Metadata describing a performance chart and the location(s) from which it was loaded.
+ */
+export interface ChartMetadata {
+    src: URL;
+    image?: {
+        src: URL;
+        size: Dimensions;
+    };
+}
 
 /**
  * Performance variable and unit.

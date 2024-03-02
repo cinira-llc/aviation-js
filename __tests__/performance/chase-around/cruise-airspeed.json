@@ -1,0 +1,58 @@
+{
+  "kind": "chase around",
+  "version": "1.0",
+  "image": {
+    "src": "./cruise-airspeed.png",
+    "size": [
+      978,
+      692
+    ]
+  },
+  "project": {
+    "src": "./cruise-airspeed.wpd.json"
+  },
+  "guides": {
+    "densityAltitudeCorrection": {
+      "flow": "right"
+    }
+  },
+  "scales": {
+    "outsideAirTemperature": {
+      "flow": "up",
+      "unit": "degrees celsius"
+    },
+    "power": {
+      "flow": "right",
+      "unit": "percent"
+    },
+    "pressureAltitude": {
+      "flow": "right",
+      "unit": "feet"
+    },
+    "trueAirspeed": {
+      "flow": "down",
+      "unit": "knots"
+    }
+  },
+  "steps": [
+    {
+      "chase": "outsideAirTemperature",
+      "until": "pressureAltitude",
+      "advance": false
+    },
+    {
+      "chase": "pressureAltitude",
+      "until": "outsideAirTemperature"
+    },
+    {
+      "chase": "densityAltitude"
+    },
+    {
+      "chase": "right",
+      "until": "power"
+    },
+    {
+      "solve": "trueAirspeed"
+    }
+  ]
+}

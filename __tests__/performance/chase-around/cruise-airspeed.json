@@ -22,7 +22,7 @@
       "unit": "degrees celsius"
     },
     "power": {
-      "flow": "right",
+      "flow": "down",
       "unit": "percent"
     },
     "pressureAltitude": {
@@ -45,7 +45,7 @@
       "until": "outsideAirTemperature"
     },
     {
-      "chase": "densityAltitude"
+      "chase": "densityAltitudeCorrection"
     },
     {
       "chase": "right",

@@ -1,6 +1,7 @@
-import { freeze } from "immer";
+import {freeze} from "immer";
 import _ from "lodash";
-import { Dimensions } from "@mattj65817/util-js";
+import {Dimensions} from "@mattj65817/util-js";
+import {AnyUnit} from "../aviation-types";
 
 /**
  * Metadata describing a performance chart and the location(s) from which it was loaded.
@@ -14,6 +15,11 @@ export interface ChartMetadata {
 }
 
 /**
+ * All performance-related units.
+ */
+export type PerformanceUnit = PerformanceVariable["unit"];
+
+/**
  * Performance variable and unit.
  */
 export type PerformanceVariable =
@@ -22,6 +28,14 @@ export type PerformanceVariable =
     | ClimbRate
     | Power
     | Weight;
+
+/**
+ * Unit and range of an input or output variable.
+ */
+export interface UnitRange {
+    unit: AnyUnit;
+    range: [number, number];
+}
 
 /**
  * Type guard for {@link Airspeed}.
@@ -72,40 +86,52 @@ export function isWeight(val: unknown): val is Weight {
  * Indicated airspeed.
  */
 interface Airspeed {
-    variable: typeof AIRSPEED[number];
-    unit: typeof AIRSPEED_UNIT[number];
+    variable:
+        | "calibratedAirspeed"
+        | "indicatedAirspeed"
+        | "trueAirspeed";
+    unit:
+        | "knots"
+        | "miles per hour";
 }
 
 /**
  * Airspeed variable.
  */
 interface CenterOfGravity {
-    variable: typeof CENTER_OF_GRAVITY[number];
-    unit: typeof CENTER_OF_GRAVITY_UNIT[number];
+    variable: "centerOfGravity";
+    unit: "inches aft of datum";
 }
 
 /**
  * Airspeed variable.
  */
 interface ClimbRate {
-    variable: typeof CLIMB_RATE,
-    unit: typeof CLIMB_RATE_UNIT[number];
+    variable: "climbRate",
+    unit:
+        | "feet per minute"
+        | "meters per second";
 }
 
 /**
  * Airspeed variable.
  */
 interface Power {
-    variable: typeof POWER[number];
-    unit: typeof POWER_UNIT[number];
+    variable: "power";
+    unit: "percent";
 }
 
 /**
  * Airspeed variable.
  */
 interface Weight {
-    variable: typeof WEIGHT[number];
-    unit: typeof WEIGHT_UNIT[number];
+    variable:
+        | "emptyWeight"
+        | "rampWeight"
+        | "weight";
+    unit:
+        | "kilograms"
+        | "pounds";
 }
 
 /**
@@ -113,7 +139,7 @@ interface Weight {
  *
  * @param val the value.
  * @param variables the variable names.
- * @param units the varible units.
+ * @param units the variable units.
  */
 function isPerformanceVariableOf<V extends PerformanceVariable>(val: unknown, variables: string[], units: string[]): val is V {
     return _.isObject(val)
@@ -128,49 +154,49 @@ function isPerformanceVariableOf<V extends PerformanceVariable>(val: unknown, va
 /**
  * Airspeed variables.
  */
-const AIRSPEED = freeze(["calibratedAirspeed", "indicatedAirspeed", "trueAirspeed"]);
+const AIRSPEED = freeze<Airspeed["variable"][]>(["calibratedAirspeed", "indicatedAirspeed", "trueAirspeed"]);
 
 /**
  * Airspeed units.
  */
-const AIRSPEED_UNIT = freeze(["knots", "miles per hour"]);
+const AIRSPEED_UNIT = freeze<Airspeed["unit"][]>(["knots", "miles per hour"]);
 
 /**
  * Center of gravity variables.
  */
-const CENTER_OF_GRAVITY = freeze(["centerOfGravity"]);
+const CENTER_OF_GRAVITY = freeze<CenterOfGravity["variable"][]>(["centerOfGravity"]);
 
 /**
  * Center of gravity units.
  */
-const CENTER_OF_GRAVITY_UNIT = freeze(["inches aft of datum"]);
+const CENTER_OF_GRAVITY_UNIT = freeze<CenterOfGravity["unit"][]>(["inches aft of datum"]);
 
 /**
  * Climb rate variables.
  */
-const CLIMB_RATE = freeze(["climbRate"]);
+const CLIMB_RATE = freeze<ClimbRate["variable"][]>(["climbRate"]);
 
 /**
  * Climb rate units.
  */
-const CLIMB_RATE_UNIT = freeze(["feet per minute", "meters per second"]);
+const CLIMB_RATE_UNIT = freeze<ClimbRate["unit"][]>(["feet per minute", "meters per second"]);
 
 /**
  * Power variables.
  */
-const POWER = freeze(["power"]);
+const POWER = freeze<Power["variable"][]>(["power"]);
 
 /**
  * Power units.
  */
-const POWER_UNIT = freeze(["percent"]);
+const POWER_UNIT = freeze<Power["unit"][]>(["percent"]);
 
 /**
  * Weight variables.
  */
-const WEIGHT = freeze(["emptyWeight", "rampWeight", "weight"]);
+const WEIGHT = freeze<Weight["variable"][]>(["emptyWeight", "rampWeight", "weight"]);
 
 /**
  * Weight units.
  */
-const WEIGHT_UNIT = freeze(["kilograms", "pounds"]);
+const WEIGHT_UNIT = freeze<Weight["unit"][]>(["kilograms", "pounds"]);

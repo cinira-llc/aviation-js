@@ -1,4 +1,5 @@
 import {
+    PerformanceUnit,
     PerformanceVariable,
     isAirspeed,
     isCenterOfGravity,
@@ -9,6 +10,7 @@ import {
 
 /* Module exports. */
 export {
+    PerformanceUnit,
     PerformanceVariable,
     isAirspeed,
     isCenterOfGravity,

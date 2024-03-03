@@ -1,5 +1,10 @@
-import { freeze } from "immer";
+import {freeze} from "immer";
 import _ from "lodash";
+
+/**
+ * All environment-related units.
+ */
+export type EnvironmentUnit = EnvironmentVariable["unit"];
 
 /**
  * Environmental variable and unit.
@@ -30,16 +35,22 @@ export function isTemperature(val: unknown): val is Temperature {
  * Altitude variable.
  */
 interface Altitude {
-    variable: typeof ALTITUDE[number];
-    unit: typeof ALTITUDE_UNIT[number];
+    variable:
+        | "densityAltitude"
+        | "pressureAltitude";
+    unit:
+        | "feet"
+        | "meters";
 }
 
 /**
  * Temperature variable.
  */
 interface Temperature {
-    variable: typeof TEMPERATURE[number];
-    unit: typeof TEMPERATURE_UNIT[number];
+    variable: "outsideAirTemperature";
+    unit:
+        | "degrees celsius"
+        | "degrees fahrenheit";
 }
 
 /**
@@ -62,19 +73,19 @@ function isEnvironmentVariableOf<V extends EnvironmentVariable>(val: unknown, va
 /**
  * Altitude variables.
  */
-const ALTITUDE = freeze(["densityAltitude", "pressureAltitude"]);
+const ALTITUDE = freeze<Altitude["variable"][]>(["densityAltitude", "pressureAltitude"]);
 
 /**
  * Altitude units.
  */
-const ALTITUDE_UNIT = freeze(["feet", "meters"]);
+const ALTITUDE_UNIT = freeze<Altitude["unit"][]>(["feet", "meters"]);
 
 /**
  * Temperature variables.
  */
-const TEMPERATURE = freeze(["outsideAirTemperature"]);
+const TEMPERATURE = freeze<Temperature["variable"][]>(["outsideAirTemperature"]);
 
 /**
  * Temperature units.
  */
-const TEMPERATURE_UNIT = freeze(["degrees celsius", "degrees fahrenheit"]);
+const TEMPERATURE_UNIT = freeze<Temperature["unit"][]>(["degrees celsius", "degrees fahrenheit"]);

@@ -29,7 +29,7 @@
   "author": "Matt Jensen <mjensen65816@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "@mattj65817/util-js": "^1.4.2"
+    "@mattj65817/util-js": "^1.5.1"
   },
   "devDependencies": {
     "@mattj65817/test-js": "^1.1.3",

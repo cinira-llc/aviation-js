@@ -1,14 +1,14 @@
 import { freeze } from "immer";
 import _ from "lodash";
-import { Chase, GuideSpec, isChase, isGuideCondition, isSolve, Solve } from "./chase-around-types";
+import { isChase, isGuideCondition, isSolve, Solve } from "./chase-around-types";
+import { CalcContext } from "./CalcContext";
 import { Contour } from "./Contour";
 import { Guide } from "./Guide";
 import { Scale } from "./Scale";
 
 import type { Path } from "@mattj65817/util-js";
 import type { ChartMetadata, UnitRange } from "../performance-types";
-import type { ChaseAroundChartDef, Step, WpdProject } from "./chase-around-types";
-import { CalcContext } from "./CalcContext";
+import type { Chase, ChaseAroundChartDef, GuideSpec, Step, WpdProject } from "./chase-around-types";
 
 /**
  * {@link ChaseAroundChart} makes performance calculations based on an aviation chase-around chart.
@@ -25,70 +25,49 @@ export class ChaseAroundChart {
     }
 
     calculate(inputs: Record<string, number>) {
-        const missing = _.difference(_.keys(this.inputs), _.keys(inputs));
-        if (!_.isEmpty(missing)) {
-            throw Error(`Missing input variable(s): ${missing.sort().join(", ")}`);
+        const missingInputs = _.difference(_.keys(this.inputs), _.keys(inputs));
+        if (!_.isEmpty(missingInputs)) {
+            throw Error(`Missing input variable(s): ${missingInputs.sort().join(", ")}`);
         }
-        return _.reduce(this.steps, (next, step) => {
+        const result = _.reduce(this.steps, (context, step) => {
             if (isChase(step)) {
-                return this.doChase(next, step);
+                return this.doChase(context, step);
             } else if (isSolve(step)) {
-                return this.doSolve(next, step);
+                return this.doSolve(context, step);
             }
             throw Error("Unsupported step.");
         }, CalcContext.create(inputs));
+        const { outputs } = result;
+        const missingOutputs = _.difference(_.keys(outputs), _.keys(this.outputs));
+        if (!_.isEmpty(missingOutputs)) {
+            throw Error(`Missing output variable(s): ${missingOutputs.sort().join(", ")}`);
+        }
+        return freeze(_.cloneDeep(outputs), true);
     }
 
-    /**
-     * Evaluate a {@link Chase} step.
-     *
-     * @param context the calculation context.
-     * @param step the step.
-     * @private
-     */
     private doChase(context: CalcContext, step: Chase) {
         const { advance, chase, until } = step;
         let along = this.resolveContour(context, chase);
-        if (context.hasPosition) {
-            along = along.split(context.position)[1];
+        if (null != until) {
+            context = context.resolve(along);
+            along = this.resolveContour(context, chase);
+            const limit = this.resolveContour(context, until);
+            along = along.split(limit)[0];
         }
-        if (null == until) {
-            return context.add(step, along, [along], false !== advance);
-        }
-        const limit = this.resolveContour(context, until);
-        return context.add(step, along.split(limit)[0], [along, limit], false !== advance);
+        return context.chase(step, along, false !== advance);
     }
 
-    /**
-     * Evaluate a {@link Solve} step.
-     *
-     * @param context the calculation context.
-     * @param step the step.
-     * @private
-     */
     private doSolve(context: CalcContext, step: Solve) {
         const { solve } = step;
-        const scale = this.scales[solve];
-        const position = context.position;
-        const along = scale.through(position).split(position)[1];
-        return context.add(step, along, [along], false)
-            .set(scale.variable, scale.value(_.last(along.path)!));
+        context = context.resolve(this.resolveContour(context, solve));
+        return context.solve(step, this.scales[solve]);
     }
 
-    /**
-     * Resolve a {@link GuideSpec} to a guide or scale.
-     *
-     * @param context the context.
-     * @param guide the guide specification.
-     * @private
-     */
     private resolveContour(context: CalcContext, guide: GuideSpec) {
         let name: string;
         if (!isGuideCondition(guide)) {
             name = guide;
         } else {
-
-            /* Evaluate a guide condition. */
             const { inputs } = context;
             const matches = _.flatMap(_.entries(guide), ([expr, guide]) => {
                 const func = new Function("inputs", `with (inputs) { return !!(${expr}); }`);
@@ -108,12 +87,11 @@ export class ChaseAroundChart {
             }
             name = matches[0];
         }
-
-        /* Resolve the guide or scale to a contour. */
         const { guides, scales } = this;
         if (name in guides) {
             return guides[name].through(context.position);
-        } else if (!(name in scales)) {
+        }
+        if (!(name in scales)) {
             throw Error(`Guide or scale not found: ${name}`);
         }
         const scale = scales[name];

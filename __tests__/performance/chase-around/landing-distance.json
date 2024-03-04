@@ -3,10 +3,7 @@
   "version": "1.0",
   "image": {
     "src": "./landing-distance.png",
-    "size": [
-      1154,
-      697
-    ]
+    "size": [1154, 697]
   },
   "project": {
     "src": "./landing-distance.wpd.json"
@@ -78,6 +75,9 @@
     {
       "chase": "obstacleHeightCorrection",
       "until": "obstacleHeight"
+    },
+    {
+      "chase": "right"
     },
     {
       "solve": "landingDistance"

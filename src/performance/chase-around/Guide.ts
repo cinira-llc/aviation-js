@@ -12,7 +12,7 @@ export class Guide {
     /**
      * Bounds of the guide. This is the minimal box that covers all contours *fully*.
      */
-    private readonly bounds: Box;
+    public readonly bounds: Box;
 
     protected constructor(
         readonly name: string,

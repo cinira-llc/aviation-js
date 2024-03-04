@@ -1,41 +1,58 @@
 {
-  "kind": "chase",
+  "kind": "chase around",
   "version": "1.0",
-  "label": "Takeoff Climb Rate",
   "image": {
     "src": "./takeoff-climb-rate.png",
-    "size": [
-      1193,
-      811
-    ]
+    "size": [1193, 811]
   },
   "project": {
     "src": "./takeoff-climb-rate.wpd.json"
   },
+  "guides": {
+    "weightCorrection": {
+      "flow": "right"
+    }
+  },
+  "scales": {
+    "climbRate": {
+      "flow": "right",
+      "unit": "feet per minute"
+    },
+    "outsideAirTemperature": {
+      "flow": "up",
+      "unit": "degrees celsius"
+    },
+    "pressureAltitude": {
+      "flow": "right",
+      "unit": "feet"
+    },
+    "weight": {
+      "flow": "up",
+      "unit": "kilograms"
+    }
+  },
   "steps": [
     {
-      "chase": "up",
-      "along": "outsideAirTemperature",
+      "chase": "outsideAirTemperature",
       "until": "pressureAltitude",
-      "unit": "feet",
       "advance": false
     },
     {
-      "chase": "right",
-      "along": "pressureAltitude",
-      "until": "outsideAirTemperature",
-      "unit": "degrees celsius"
+      "chase": "pressureAltitude",
+      "until": "outsideAirTemperature"
     },
     {
-      "chase": "right",
-      "along": "weightCorrection",
-      "until": "weight",
-      "unit": "kilograms"
+      "chase": "right"
     },
     {
-      "solve": "right",
-      "using": "climbRate",
-      "unit": "feet per minute"
+      "chase": "weightCorrection",
+      "until": "weight"
+    },
+    {
+      "chase": "right"
+    },
+    {
+      "solve": "climbRate"
     }
   ]
 }

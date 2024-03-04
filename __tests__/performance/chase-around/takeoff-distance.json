@@ -1,5 +1,5 @@
 {
-  "kind": "chase",
+  "kind": "chase around",
   "version": "1.0",
   "image": {
     "src": "./da40-takeoff-distance.png",
@@ -8,45 +8,85 @@
   "project": {
     "src": "./da40-takeoff-distance.wpd.json"
   },
+  "guides": {
+    "headwindComponentCorrection": {
+      "flow": "right"
+    },
+    "obstacleHeightCorrection": {
+      "flow": "right"
+    },
+    "tailwindComponentCorrection": {
+      "flow": "right"
+    },
+    "weightCorrection": {
+      "flow": "right"
+    }
+  },
+  "scales": {
+    "outsideAirTemperature": {
+      "flow": "up",
+      "unit": "degrees celsius"
+    },
+    "pressureAltitude": {
+      "flow": "right",
+      "unit": "feet"
+    },
+    "weight": {
+      "flow": "up",
+      "unit": "kilograms"
+    },
+    "windComponent": {
+      "flow": "up",
+      "unit": "knots"
+    },
+    "obstacleHeight": {
+      "flow": "up",
+      "unit": "meters"
+    },
+    "takeoffDistance": {
+      "flow": "right",
+      "unit": "meters"
+    }
+  },
   "steps": [
     {
-      "chase": "up",
-      "along": "outsideAirTemperature",
+      "chase": "outsideAirTemperature",
       "until": "pressureAltitude",
-      "unit": "feet",
       "advance": false
     },
     {
-      "chase": "right",
-      "along": "pressureAltitude",
-      "until": "outsideAirTemperature",
-      "unit": "degrees celsius"
+      "chase": "pressureAltitude",
+      "until": "outsideAirTemperature"
     },
     {
-      "chase": "right",
-      "along": "weightCorrection",
-      "until": "weight",
-      "unit": "kilograms"
+      "chase": "right"
     },
     {
-      "chase": "right",
-      "along": {
+      "chase": "weightCorrection",
+      "until": "weight"
+    },
+    {
+      "chase": "right"
+    },
+    {
+      "chase": {
         "windComponent >= 0": "headwindComponentCorrection",
         "windComponent < 0": "tailwindComponentCorrection"
       },
-      "until": "windComponent",
-      "unit": "knots"
+      "until": "windComponent"
     },
     {
-      "chase": "right",
-      "along": "obstacleHeightCorrection",
-      "until": "obstacleHeight",
-      "unit": "meters"
+      "chase": "right"
     },
     {
-      "solve": "right",
-      "using": "takeoffDistance",
-      "unit": "meters"
+      "chase": "obstacleHeightCorrection",
+      "until": "obstacleHeight"
+    },
+    {
+      "chase": "right"
+    },
+    {
+      "solve": "takeoffDistance"
     }
   ]
 }

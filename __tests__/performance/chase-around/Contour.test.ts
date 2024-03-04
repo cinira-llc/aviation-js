@@ -1,4 +1,5 @@
-import {Contour} from "../../../src/performance/chase-around/Contour";
+import { Contour } from "../../../src/performance/chase-around/Contour";
+import { intersection } from "@mattj65817/util-js";
 
 describe("Contour", () => {
     describe("create()", () => {
@@ -58,6 +59,28 @@ describe("Contour", () => {
             const c0 = Contour.create([[2, 1], [1, 2]], "right");
             const c1 = Contour.create([[1, 1], [2, 2]], "down");
             expect(c0.intersection(c1)).toEqual([1.5, 1.5]);
+        });
+    });
+    describe("overlap()", () => {
+        it("returns undefined if the contours do not overlap", () => {
+            const c0 = Contour.create([[1, 1], [2, 1]], "right");
+            const c1 = Contour.create([[3, 1], [4, 1]], "right");
+            expect(c0.overlap(c1)).toBeUndefined();
+        });
+        it("returns overlap if the contours overlap on a segment", () => {
+            const c0 = Contour.create([[1, 1], [2, 1]], "right");
+            const c1 = Contour.create([[1.5, 2], [3, 2]], "right");
+            expect(c0.overlap(c1)).toEqual([1.5, 1]);
+        });
+        it("returns overlap if the contours overlap on a single point", () => {
+            const c0 = Contour.create([[1, 1], [2, 1]], "right");
+            const c1 = Contour.create([[2, 2], [3, 2]], "right");
+            expect(c0.overlap(c1)).toEqual([2, 1]);
+        });
+        it("returns overlap if one contour completely engulfs the other", () => {
+            const c0 = Contour.create([[1, 1], [100, 1]], "right");
+            const c1 = Contour.create([[20, 2], [50, 2]], "right");
+            expect(c0.overlap(c1)).toEqual([20, 1]);
         });
     });
     describe("split()", () => {

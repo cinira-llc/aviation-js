@@ -1,7 +1,10 @@
 import cruiseAirspeedJson from "./cruise-airspeed.json";
 import cruiseAirspeedProjJson from "./cruise-airspeed.wpd.json";
-import {isChaseAroundChartDef, isWpdProject} from "../../../src/performance/chase-around/chase-around-types";
-import {ChaseAroundChart} from "../../../src/performance/chase-around/ChaseAroundChart";
+import landingDistanceJson from "./landing-distance.json";
+import landingDistanceProjJson from "./landing-distance.wpd.json";
+import { isChaseAroundChartDef, isWpdProject, Step } from "../../../src/performance/chase-around/chase-around-types";
+import { ChaseAroundChart } from "../../../src/performance/chase-around/ChaseAroundChart";
+import { CalcContext } from "../../../src/performance/chase-around/CalcContext";
 
 describe("ChaseAroundChart", () => {
     describe("create()", () => {
@@ -27,19 +30,39 @@ describe("ChaseAroundChart", () => {
                 const context = chart.calculate({
                     outsideAirTemperature: 15,
                     power: 55,
-                    pressureAltitude: 2_000
+                    pressureAltitude: 5_000,
                 });
-                const path = context.steps.reduce((acc, {along: {path}}) => {
-                    return path.reduce((acc, [x, y]) => {
-                        if ("" === acc) {
-                            return `M ${x} ${y}`;
-                        }
-                        return `${acc} L ${x} ${y}`;
-                    }, acc);
-                }, "");
-                console.log(path);
-                expect(context.outputs["trueAirspeed"]).toBeCloseTo(118.74);
+                console.log(toSvgPath(context.steps));
+                expect(context.outputs["trueAirspeed"]).toBeCloseTo(118.46);
+            }
+        });
+        it("solves the landing-distance sample problem", () => {
+            const src = new URL("http://charts-r-us.com/landing-distance.json");
+            if (!(isChaseAroundChartDef(landingDistanceJson) && isWpdProject(landingDistanceProjJson))) {
+                expect(true).toBe(false);
+            } else {
+                const chart = ChaseAroundChart.create(landingDistanceJson, landingDistanceProjJson, src);
+                const context = chart.calculate({
+                    obstacleHeight: 0,
+                    outsideAirTemperature: 15,
+                    pressureAltitude: 2_000,
+                    weight: 1_000,
+                    windComponent: 10,
+                });
+                console.log(toSvgPath(context.steps));
+                expect(context.outputs["trueAirspeed"]).toBeCloseTo(118.46);
             }
         });
     });
 });
+
+function toSvgPath(steps: CalcContext["steps"]): string {
+    return steps.reduce((acc, { along: { path } }) => {
+        return path.reduce((acc, [x, y]) => {
+            if ("" === acc) {
+                return `M ${x} ${y}`;
+            }
+            return `${acc} L ${x} ${y}`;
+        }, acc);
+    }, "");
+}

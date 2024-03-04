@@ -1,11 +1,11 @@
-import {freeze} from "immer";
+import { freeze } from "immer";
 import _ from "lodash";
-import {Contour} from "./Contour";
+import { Contour } from "./Contour";
+import { Flow, Flows } from "./Flows";
+import { Guide } from "./Guide";
 
-import type {AnyUnit} from "../../aviation-types";
-import {Direction} from "./chase-around-types";
-import {Flow, Flows} from "./Flows";
-import {Guide} from "./Guide";
+import type { AnyUnit } from "../../aviation-types";
+import type { Direction } from "./chase-around-types";
 
 export class Scale extends Guide {
     private constructor(
@@ -14,7 +14,7 @@ export class Scale extends Guide {
         readonly unit: AnyUnit,
         readonly range: [number, number],
         contours: [number, Contour][],
-        flow: Flow
+        flow: Flow,
     ) {
         super(name, contours, flow);
     }

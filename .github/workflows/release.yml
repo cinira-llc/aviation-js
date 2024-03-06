@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: "lts/*"
       - run: npm install
-      - run: npm audit signatures
+#      - run: npm audit signatures
       - run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

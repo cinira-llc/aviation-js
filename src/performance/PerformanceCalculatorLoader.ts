@@ -1,6 +1,7 @@
 import { freeze } from "immer";
 import { isChaseAroundChartDef, WpdProject } from "./chase-around/chase-around-types";
 import { ChaseAroundChart } from "./chase-around";
+import { PerformanceCalculator } from "./performance-types";
 
 /**
  * {@link PerformanceCalculatorLoader} encapsulates the process of loading a performance calculator from a URL.
@@ -14,7 +15,7 @@ export class PerformanceCalculatorLoader {
      *
      * @param src the location.
      */
-    async load(src: URL) {
+    async load(src: URL): Promise<PerformanceCalculator> {
         const { fetch } = this;
         const def = await fetch<{ kind: string }>(src);
         if (isChaseAroundChartDef(def)) {

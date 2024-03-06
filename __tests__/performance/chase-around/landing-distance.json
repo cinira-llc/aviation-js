@@ -1,52 +1,86 @@
 {
-  "kind": "chase",
+  "kind": "chase around",
   "version": "1.0",
   "image": {
     "src": "./landing-distance.png",
-    "size": [
-      1154,
-      697
-    ]
+    "size": [1154, 697]
   },
   "project": {
     "src": "./landing-distance.wpd.json"
   },
+  "guides": {
+    "obstacleHeightCorrection": {
+      "flow": "right"
+    },
+    "weightCorrection": {
+      "flow": "right"
+    },
+    "windComponentCorrection": {
+      "flow": "right"
+    }
+  },
+  "scales": {
+    "outsideAirTemperature": {
+      "flow": "up",
+      "unit": "degrees celsius"
+    },
+    "pressureAltitude": {
+      "flow": "right",
+      "unit": "feet"
+    },
+    "weight": {
+      "flow": "up",
+      "unit": "kilograms"
+    },
+    "windComponent": {
+      "flow": "up",
+      "unit": "knots"
+    },
+    "obstacleHeight": {
+      "flow": "up",
+      "unit": "meters"
+    },
+    "landingDistance": {
+      "flow": "right",
+      "unit": "meters"
+    }
+  },
   "steps": [
     {
-      "chase": "up",
-      "along": "outsideAirTemperature",
+      "chase": "outsideAirTemperature",
       "until": "pressureAltitude",
-      "unit": "feet",
       "advance": false
     },
     {
-      "chase": "right",
-      "along": "pressureAltitude",
-      "until": "outsideAirTemperature",
-      "unit": "degrees celsius"
+      "chase": "pressureAltitude",
+      "until": "outsideAirTemperature"
     },
     {
-      "chase": "right",
-      "along": "weightCorrection",
-      "until": "weight",
-      "unit": "kilograms"
+      "chase": "right"
     },
     {
-      "chase": "right",
-      "along": "windComponentCorrection",
-      "until": "windComponent",
-      "unit": "knots"
+      "chase": "weightCorrection",
+      "until": "weight"
     },
     {
-      "chase": "right",
-      "along": "obstacleHeightCorrection",
-      "until": "obstacleHeight",
-      "unit": "meters"
+      "chase": "right"
     },
     {
-      "solve": "right",
-      "using": "landingDistance",
-      "unit": "meters"
+      "chase": "windComponentCorrection",
+      "until": "windComponent"
+    },
+    {
+      "chase": "right"
+    },
+    {
+      "chase": "obstacleHeightCorrection",
+      "until": "obstacleHeight"
+    },
+    {
+      "chase": "right"
+    },
+    {
+      "solve": "landingDistance"
     }
   ]
 }

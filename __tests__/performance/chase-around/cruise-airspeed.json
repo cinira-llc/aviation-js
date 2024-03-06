@@ -3,10 +3,7 @@
   "version": "1.0",
   "image": {
     "src": "./cruise-airspeed.png",
-    "size": [
-      978,
-      692
-    ]
+    "size": [978, 692]
   },
   "project": {
     "src": "./cruise-airspeed.wpd.json"
@@ -22,7 +19,7 @@
       "unit": "degrees celsius"
     },
     "power": {
-      "flow": "right",
+      "flow": "down",
       "unit": "percent"
     },
     "pressureAltitude": {
@@ -45,7 +42,7 @@
       "until": "outsideAirTemperature"
     },
     {
-      "chase": "densityAltitude"
+      "chase": "densityAltitudeCorrection"
     },
     {
       "chase": "right",

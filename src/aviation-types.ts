@@ -1,4 +1,20 @@
 import _ from "lodash";
+import {EnvironmentUnit, EnvironmentVariable} from "./environment";
+import {PerformanceUnit, PerformanceVariable} from "./performance";
+
+/**
+ * All known variable units.
+ */
+export type AnyUnit =
+    | EnvironmentUnit
+    | PerformanceUnit;
+
+/**
+ * All known variables.
+ */
+export type AnyVariable =
+    | EnvironmentVariable
+    | PerformanceVariable;
 
 /**
  * Position of an aircraft in flight.

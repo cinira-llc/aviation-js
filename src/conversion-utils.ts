@@ -1,6 +1,5 @@
-import { freeze } from "immer";
-import { PerformanceVariable } from "./performance/performance-types";
-import { EnvironmentVariable } from "./environment/environment-types";
+import {freeze} from "immer";
+import {AnyUnit} from "./aviation-types";
 
 /**
  * Convert a value from one unit to another.
@@ -36,13 +35,6 @@ export function convertUnits(value: number, from: AnyUnit, to: AnyUnit): number 
 }
 
 /**
- * Any convertable unit.
- */
-type AnyUnit =
-    | EnvironmentVariable["unit"]
-    | PerformanceVariable["unit"];
-
-/**
  * Hash of unit conversion proportions and adjustments.
  */
 type UnitConversions = Partial<{
@@ -58,6 +50,6 @@ type UnitConversions = Partial<{
 const UNIT_CONVERSIONS = freeze<UnitConversions>({
     "degrees celsius:degrees fahrenheit": [9 / 5, 32],
     "feet:meters": [0.3048],
-    "feet per minute:meters per minute": [0.3048],
+    "feet per minute:meters per second": [0.3048],
     "pounds:kilograms": [0.453592],
 }, true);

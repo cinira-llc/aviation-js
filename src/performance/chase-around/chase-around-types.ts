@@ -1,8 +1,9 @@
 import _ from "lodash";
-import {Dimensions, Point} from "@mattj65817/util-js";
+import { Dimensions, isPath, Path, Point } from "@mattj65817/util-js";
 
-import {EnvironmentVariable} from "../../environment";
-import {PerformanceVariable} from "..";
+import { EnvironmentVariable } from "../../environment";
+import { isPerformanceCalculation, PerformanceVariable } from "..";
+import { PerformanceCalculation } from "../performance-types";
 
 /**
  * Structure of a chase-around chart definition JSON file.
@@ -34,6 +35,17 @@ export interface ChaseAroundChartDef {
         };
     };
     steps: Step[];
+}
+
+/**
+ * Results of a performance calculation produced from a chase-around chart.
+ */
+export interface ChaseAroundCalculation extends PerformanceCalculation {
+
+    /**
+     * Visual path through the chase-around chart.
+     */
+    solution: Path[];
 }
 
 /**
@@ -162,6 +174,18 @@ export type GuideSpec =
  */
 export interface Solve {
     solve: GuideName;
+}
+
+/**
+ * Type guard for {@link ChaseAroundCalculation}.
+ *
+ * @param val the value.
+ */
+export function isChaseAroundCalculation(val: unknown): val is ChaseAroundCalculation {
+    return isPerformanceCalculation(val)
+        && "solution" in val
+        && _.isArray(val.solution)
+        && -1 === val.solution.findIndex(next => !isPath(next));
 }
 
 /**

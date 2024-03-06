@@ -1,7 +1,7 @@
-import {freeze} from "immer";
+import { freeze } from "immer";
 import _ from "lodash";
-import {Dimensions} from "@mattj65817/util-js";
-import {AnyUnit} from "../aviation-types";
+import { Dimensions } from "@mattj65817/util-js";
+import { AnyUnit } from "../aviation-types";
 
 /**
  * Metadata describing a performance chart and the location(s) from which it was loaded.
@@ -12,6 +12,50 @@ export interface ChartMetadata {
         src: URL;
         size: Dimensions;
     };
+}
+
+/**
+ * Public interface to an object which calculates one or more performance variables.
+ */
+export interface PerformanceCalculator {
+
+    /**
+     * Input variable(s) required for the calculation.
+     */
+    inputs: Record<string, {
+        unit: AnyUnit;
+        range?: [number, number];
+    }>;
+
+    /**
+     * Output variable(s) produced by the calculation.
+     */
+    outputs: Record<string, {
+        unit: AnyUnit;
+    }>;
+
+    /**
+     * Calculate output(s) from input(s).
+     *
+     * @param inputs the inputs.
+     */
+    calculate(inputs: Record<string, number>): PerformanceCalculation;
+}
+
+/**
+ * Results of a performance calculation.
+ */
+export interface PerformanceCalculation {
+
+    /**
+     * Inputs provided to the calculation.
+     */
+    inputs: Record<string, number>;
+
+    /**
+     * Outputs produced by the calculation.
+     */
+    outputs: Record<string, number>;
 }
 
 /**
@@ -62,6 +106,19 @@ export function isCenterOfGravity(val: unknown): val is CenterOfGravity {
  */
 export function isClimbRate(val: unknown): val is ClimbRate {
     return isPerformanceVariableOf(val, CLIMB_RATE, CLIMB_RATE_UNIT);
+}
+
+/**
+ * Type guard for {@link PerformanceCalculation}.
+ *
+ * @param val the value.
+ */
+export function isPerformanceCalculation(val: unknown): val is PerformanceCalculation {
+    return _.isObject(val)
+        && "inputs" in val
+        && "outputs" in val
+        && _.isObject(val.inputs)
+        && _.isObject(val.outputs);
 }
 
 /**

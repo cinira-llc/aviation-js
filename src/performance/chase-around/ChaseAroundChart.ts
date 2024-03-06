@@ -1,25 +1,25 @@
 import { freeze } from "immer";
 import _ from "lodash";
-import { isChase, isGuideCondition, isSolve, Solve } from "./chase-around-types";
-import { CalcContext } from "./CalcContext";
+import { ChaseAroundCalculation, isChase, isGuideCondition, isSolve, Solve } from "./chase-around-types";
+import { ChaseAroundContext } from "./ChaseAroundContext";
 import { Contour } from "./Contour";
 import { Guide } from "./Guide";
 import { Scale } from "./Scale";
 
 import type { Path } from "@mattj65817/util-js";
-import type { ChartMetadata, UnitRange } from "../performance-types";
+import type { ChartMetadata, PerformanceCalculator, UnitRange } from "../performance-types";
 import type { Chase, ChaseAroundChartDef, GuideSpec, Step, WpdProject } from "./chase-around-types";
 
 /**
  * {@link ChaseAroundChart} makes performance calculations based on an aviation chase-around chart.
  */
-export class ChaseAroundChart {
+export class ChaseAroundChart implements PerformanceCalculator {
     private constructor(
         private readonly steps: Step[],
         private readonly guides: Record<string, Guide>,
         private readonly scales: Record<string, Scale>,
-        private readonly inputs: Record<string, UnitRange>,
-        private readonly outputs: Record<string, UnitRange>,
+        public readonly inputs: Record<string, UnitRange>,
+        public readonly outputs: Record<string, UnitRange>,
         public readonly meta: ChartMetadata,
     ) {
     }
@@ -36,16 +36,20 @@ export class ChaseAroundChart {
                 return this.doSolve(context, step);
             }
             throw Error("Unsupported step.");
-        }, CalcContext.create(inputs));
+        }, ChaseAroundContext.create(inputs));
         const { outputs } = result;
         const missingOutputs = _.difference(_.keys(outputs), _.keys(this.outputs));
         if (!_.isEmpty(missingOutputs)) {
             throw Error(`Missing output variable(s): ${missingOutputs.sort().join(", ")}`);
         }
-        return freeze(_.cloneDeep(outputs), true);
+        return freeze<ChaseAroundCalculation>(_.cloneDeep({
+            solution: _.map(result.contours, "path"),
+            inputs,
+            outputs,
+        }), true);
     }
 
-    private doChase(context: CalcContext, step: Chase) {
+    private doChase(context: ChaseAroundContext, step: Chase) {
         const { advance, chase, until } = step;
         let along = this.resolveContour(context, chase);
         if (null != until) {
@@ -57,13 +61,13 @@ export class ChaseAroundChart {
         return context.chase(step, along, false !== advance);
     }
 
-    private doSolve(context: CalcContext, step: Solve) {
+    private doSolve(context: ChaseAroundContext, step: Solve) {
         const { solve } = step;
         context = context.resolve(this.resolveContour(context, solve));
-        return context.solve(step, this.scales[solve]);
+        return context.solve(this.scales[solve]);
     }
 
-    private resolveContour(context: CalcContext, guide: GuideSpec) {
+    private resolveContour(context: ChaseAroundContext, guide: GuideSpec) {
         let name: string;
         if (!isGuideCondition(guide)) {
             name = guide;

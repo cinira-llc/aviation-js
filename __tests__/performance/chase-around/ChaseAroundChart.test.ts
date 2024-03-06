@@ -13,6 +13,8 @@ import takeoffDistanceProjJson from "./takeoff-distance.wpd.json";
 import { isChaseAroundChartDef, isWpdProject } from "../../../src/performance/chase-around/chase-around-types";
 import { ChaseAroundChart } from "../../../src/performance/chase-around/ChaseAroundChart";
 import { Contour } from "../../../src/performance/chase-around/Contour";
+import { ChaseAroundContext } from "../../../src/performance/chase-around/ChaseAroundContext";
+import { Path } from "@mattj65817/util-js";
 
 describe("ChaseAroundChart", () => {
     describe("create()", () => {
@@ -40,8 +42,13 @@ describe("ChaseAroundChart", () => {
                     power: 55,
                     pressureAltitude: 5_000,
                 });
-                expect(_.keys(result)).toEqual(["trueAirspeed"]);
-                expect(result["trueAirspeed"]).toBeCloseTo(118.46);
+                expect(result.inputs).toEqual({
+                    outsideAirTemperature: 15,
+                    power: 55,
+                    pressureAltitude: 5_000,
+                });
+                expect(_.keys(result.outputs)).toEqual(["trueAirspeed"]);
+                expect(result.outputs["trueAirspeed"]).toBeCloseTo(118.46);
             }
         });
         it("solves the landing-distance sample problem", () => {
@@ -57,8 +64,15 @@ describe("ChaseAroundChart", () => {
                     weight: 1_000,
                     windComponent: 10,
                 });
-                expect(_.keys(result)).toEqual(["landingDistance"]);
-                expect(result["landingDistance"]).toBeCloseTo(199.97);
+                expect(result.inputs).toEqual({
+                    obstacleHeight: 0,
+                    outsideAirTemperature: 15,
+                    pressureAltitude: 2_000,
+                    weight: 1_000,
+                    windComponent: 10,
+                });
+                expect(_.keys(result.outputs)).toEqual(["landingDistance"]);
+                expect(result.outputs["landingDistance"]).toBeCloseTo(199.97);
             }
         });
         it("solves the landing-distance-flaps-up sample problem", () => {
@@ -74,8 +88,15 @@ describe("ChaseAroundChart", () => {
                     weight: 1_000,
                     windComponent: 8,
                 });
-                expect(_.keys(result)).toEqual(["landingDistance"]);
-                expect(result["landingDistance"]).toBeCloseTo(272.26);
+                expect(result.inputs).toEqual({
+                    obstacleHeight: 0,
+                    outsideAirTemperature: 10,
+                    pressureAltitude: 4_000,
+                    weight: 1_000,
+                    windComponent: 8,
+                });
+                expect(_.keys(result.outputs)).toEqual(["landingDistance"]);
+                expect(result.outputs["landingDistance"]).toBeCloseTo(272.26);
             }
         });
         it("solves the takeoff-climb-rate sample problem", () => {
@@ -87,10 +108,15 @@ describe("ChaseAroundChart", () => {
                 const result = chart.calculate({
                     outsideAirTemperature: 15,
                     pressureAltitude: 2_000,
-                    weight: 1_000
+                    weight: 1_000,
                 });
-                expect(_.keys(result)).toEqual(["climbRate"]);
-                expect(result["climbRate"]).toBeCloseTo(987.17);
+                expect(result.inputs).toEqual({
+                    outsideAirTemperature: 15,
+                    pressureAltitude: 2_000,
+                    weight: 1_000,
+                });
+                expect(_.keys(result.outputs)).toEqual(["climbRate"]);
+                expect(result.outputs["climbRate"]).toBeCloseTo(987.17);
             }
         });
         it("solves the takeoff-distance sample problem", () => {
@@ -106,20 +132,28 @@ describe("ChaseAroundChart", () => {
                     weight: 1_000,
                     windComponent: 10,
                 });
-                expect(_.keys(result)).toEqual(["takeoffDistance"]);
-                expect(result["takeoffDistance"]).toBeCloseTo(302.98);
+                expect(result.inputs).toEqual({
+                    obstacleHeight: 15,
+                    outsideAirTemperature: 15,
+                    pressureAltitude: 2_000,
+                    weight: 1_000,
+                    windComponent: 10,
+                });
+                expect(_.keys(result.outputs)).toEqual(["takeoffDistance"]);
+                expect(result.outputs["takeoffDistance"]).toBeCloseTo(302.98);
+                expect(toSvgPath(result.solution)).toEqual("M 268.2292 622.0483 L 268.2292 492.8054 M 11.8178 537.1747 L 85.2317 527.1475 L 232.7757 501.3631 L 268.2292 492.8054 M 268.2292 492.8054 L 548.9926 492.8054 M 548.9926 492.8054 L 644.2515 547.5632 M 644.2515 547.5632 L 738.5747 547.5632 M 738.5747 547.5632 L 822.5936 575.775 M 822.5936 575.775 L 929.3123 575.775 M 929.3123 575.775 L 977.658 524.1605 M 977.658 524.1605 L 987.3271 524.1605 M 987.3271 524.1605 L 1003.0843 524.1605");
             }
         });
     });
 });
 
-function toSvgPath(contours: Contour[]): string {
-    return contours.reduce((acc, { path }) => {
-        return path.reduce((acc, [x, y]) => {
-            if ("" === acc) {
-                return `M ${x} ${y}`;
+function toSvgPath(paths: Path[]): string {
+    return _.trim(paths.reduce((acc, path) => {
+        return path.reduce((acc, [x, y], index) => {
+            if (0 === index) {
+                return `${acc} M ${x} ${y}`;
             }
             return `${acc} L ${x} ${y}`;
         }, acc);
-    }, "");
+    }, ""));
 }

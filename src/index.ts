@@ -1,6 +1,6 @@
 import { AnyUnit, AnyVariable, isFlightPosition, isGeoCoordinates, isModeSCode } from "./aviation-types";
 import { convertUnits } from "./conversion-utils";
-import { PerformanceCalculatorLoader } from "./performance";
+import { PerformanceCalculatorLoader, isChart, isPerformanceCalculation } from "./performance";
 import { isChaseAroundCalculation } from "./performance/chase-around";
 
 import type { FlightPosition, GeoCoordinates, ModeSCode } from "./aviation-types";
@@ -20,7 +20,9 @@ export {
     PerformanceCalculatorLoader,
     convertUnits,
     isChaseAroundCalculation,
+    isChart,
     isFlightPosition,
     isGeoCoordinates,
     isModeSCode,
+    isPerformanceCalculation,
 };

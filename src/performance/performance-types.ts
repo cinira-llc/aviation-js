@@ -1,14 +1,13 @@
 import { freeze } from "immer";
 import _ from "lodash";
-import { Dimensions } from "@mattj65817/util-js";
+import { Dimensions, isPoint } from "@mattj65817/util-js";
 import { AnyUnit } from "../aviation-types";
 
 /**
  * Metadata describing a performance chart and the location(s) from which it was loaded.
  */
-export interface ChartMetadata {
-    src: URL;
-    image?: {
+export interface Chart {
+    image: {
         src: URL;
         size: Dimensions;
     };
@@ -97,6 +96,21 @@ export function isAirspeed(val: unknown): val is Airspeed {
  */
 export function isCenterOfGravity(val: unknown): val is CenterOfGravity {
     return isPerformanceVariableOf(val, CENTER_OF_GRAVITY, CENTER_OF_GRAVITY_UNIT);
+}
+
+/**
+ * Type guard for {@link Chart}.
+ *
+ * @param val the value.
+ */
+export function isChart(val: unknown): val is Chart {
+    return _.isObject(val)
+        && "image" in val
+        && _.isObject(val.image)
+        && "src" in val.image
+        && "size" in val.image
+        && val.image.src instanceof URL
+        && isPoint(val.image.size);
 }
 
 /**

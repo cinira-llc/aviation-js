@@ -1,26 +1,27 @@
 import { freeze } from "immer";
 import _ from "lodash";
-import { ChaseAroundCalculation, isChase, isGuideCondition, isSolve, Solve } from "./chase-around-types";
+import { ChaseAroundCalculation, isChase, isGuideCondition, isSolve } from "./chase-around-types";
 import { ChaseAroundContext } from "./ChaseAroundContext";
 import { Contour } from "./Contour";
 import { Guide } from "./Guide";
 import { Scale } from "./Scale";
 
 import type { Path } from "@mattj65817/util-js";
-import type { ChartMetadata, PerformanceCalculator, UnitRange } from "../performance-types";
-import type { Chase, ChaseAroundChartDef, GuideSpec, Step, WpdProject } from "./chase-around-types";
+import type { Chase, ChaseAroundChartDef, GuideSpec, Solve, Step, WpdProject } from "./chase-around-types";
+import type { Chart, PerformanceCalculator, UnitRange } from "../performance-types";
+
 
 /**
  * {@link ChaseAroundChart} makes performance calculations based on an aviation chase-around chart.
  */
-export class ChaseAroundChart implements PerformanceCalculator {
+export class ChaseAroundChart implements Chart, PerformanceCalculator {
     private constructor(
         private readonly steps: Step[],
         private readonly guides: Record<string, Guide>,
         private readonly scales: Record<string, Scale>,
         public readonly inputs: Record<string, UnitRange>,
         public readonly outputs: Record<string, UnitRange>,
-        public readonly meta: ChartMetadata,
+        public readonly image: Chart["image"],
     ) {
     }
 
@@ -189,11 +190,8 @@ export class ChaseAroundChart implements PerformanceCalculator {
             ], "up"),
         });
         return freeze(new ChaseAroundChart(_.cloneDeep(steps), guides, scales, inputs, outputs, {
-            src: new URL(src.href),
-            image: {
-                src: new URL(def.image.src, src),
-                size: [width, height],
-            },
+            src: new URL(def.image.src, src),
+            size: [width, height],
         }), true);
     }
 }

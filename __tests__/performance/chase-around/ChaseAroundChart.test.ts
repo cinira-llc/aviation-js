@@ -1,4 +1,9 @@
 import _ from "lodash";
+import { isChaseAroundChartDef, isWpdProject } from "../../../src/performance/chase-around/chase-around-types";
+import { isChart } from "../../../src/performance";
+import { ChaseAroundChart } from "../../../src/performance/chase-around";
+
+import type { Path } from "@mattj65817/util-js";
 
 import cruiseAirspeedJson from "./cruise-airspeed.json";
 import cruiseAirspeedProjJson from "./cruise-airspeed.wpd.json";
@@ -10,11 +15,6 @@ import takeoffClimbRateJson from "./takeoff-climb-rate.json";
 import takeoffClimbRateProjJson from "./takeoff-climb-rate.wpd.json";
 import takeoffDistanceJson from "./takeoff-distance.json";
 import takeoffDistanceProjJson from "./takeoff-distance.wpd.json";
-import { isChaseAroundChartDef, isWpdProject } from "../../../src/performance/chase-around/chase-around-types";
-import { ChaseAroundChart } from "../../../src/performance/chase-around/ChaseAroundChart";
-import { Contour } from "../../../src/performance/chase-around/Contour";
-import { ChaseAroundContext } from "../../../src/performance/chase-around/ChaseAroundContext";
-import { Path } from "@mattj65817/util-js";
 
 describe("ChaseAroundChart", () => {
     describe("create()", () => {
@@ -24,9 +24,9 @@ describe("ChaseAroundChart", () => {
                 expect(true).toBe(false);
             } else {
                 const chart = ChaseAroundChart.create(cruiseAirspeedJson, cruiseAirspeedProjJson, src);
-                expect(chart.meta.src.href).toBe(src.href);
-                expect(chart.meta.image!.src.href).toBe("http://charts-r-us.com/cruise-airspeed.png");
-                expect(chart.meta.image!.size).toEqual([978, 692]);
+                expect(isChart(chart)).toBe(true);
+                expect(chart.image.src.href).toBe("http://charts-r-us.com/cruise-airspeed.png");
+                expect(chart.image.size).toEqual([978, 692]);
             }
         });
     });

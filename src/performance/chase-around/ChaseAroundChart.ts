@@ -25,6 +25,11 @@ export class ChaseAroundChart implements Chart, PerformanceCalculator {
     ) {
     }
 
+    /**
+     * Calculate output(s) from a given set of input(s).
+     *
+     * @param inputs the input variables.
+     */
     calculate(inputs: Record<string, number>) {
         const missingInputs = _.difference(_.keys(this.inputs), _.keys(inputs));
         if (!_.isEmpty(missingInputs)) {
@@ -44,24 +49,40 @@ export class ChaseAroundChart implements Chart, PerformanceCalculator {
             throw Error(`Missing output variable(s): ${missingOutputs.sort().join(", ")}`);
         }
         return freeze<ChaseAroundCalculation>(_.cloneDeep({
-            solution: _.map(result.contours, "path"),
+            solution: _.map(result.solution, "path"),
+            scales: _.map(result.scales, "path"),
             inputs,
             outputs,
         }), true);
     }
 
+    /**
+     * Evaluate a {@link Chase} step.
+     *
+     * @param context the current context.
+     * @param step the step to evaluate.
+     * @private
+     */
     private doChase(context: ChaseAroundContext, step: Chase) {
-        const { advance, chase, until } = step;
-        let along = this.resolveContour(context, chase);
-        if (null != until) {
-            context = context.resolve(along);
-            along = this.resolveContour(context, chase);
+        const { chase, until } = step;
+        const contour = this.resolveContour(context, chase);
+        if (null == until) {
+            return context.chase(step, contour, []);
+        } else {
+            context = context.resolve(contour);
+            const along = this.resolveContour(context, chase);
             const limit = this.resolveContour(context, until);
-            along = along.split(limit)[0];
+            return context.chase(step, along.split(limit)[0], [limit.split(along)[0]]);
         }
-        return context.chase(step, along, false !== advance);
     }
 
+    /**
+     * Evaluate a {@link Solve} step.
+     *
+     * @param context the current context.
+     * @param step the step to evaluate.
+     * @private
+     */
     private doSolve(context: ChaseAroundContext, step: Solve) {
         const { solve } = step;
         context = context.resolve(this.resolveContour(context, solve));

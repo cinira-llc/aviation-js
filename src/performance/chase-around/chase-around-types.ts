@@ -41,6 +41,10 @@ export interface ChaseAroundChartDef {
  * Results of a performance calculation produced from a chase-around chart.
  */
 export interface ChaseAroundCalculation extends PerformanceCalculation {
+    /**
+     * Visual path of scales which affected the solution.
+     */
+    scales: Path[];
 
     /**
      * Visual path through the chase-around chart.
@@ -158,7 +162,6 @@ export function isWpdProject(val: unknown): val is WpdProject {
 export interface Chase {
     chase: GuideSpec;
     until?: GuideName;
-    advance?: false;
 }
 
 /**

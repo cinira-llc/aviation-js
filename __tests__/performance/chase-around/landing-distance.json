@@ -47,11 +47,6 @@
   },
   "steps": [
     {
-      "chase": "outsideAirTemperature",
-      "until": "pressureAltitude",
-      "advance": false
-    },
-    {
       "chase": "pressureAltitude",
       "until": "outsideAirTemperature"
     },

@@ -1,7 +1,8 @@
 import { freeze } from "immer";
-import { isChaseAroundChartDef, WpdProject } from "./chase-around/chase-around-types";
+import { fetchJson } from "@mattj65817/util-js";
 import { ChaseAroundChart } from "./chase-around";
 import { PerformanceCalculator } from "./performance-types";
+import { isChaseAroundChartDef, WpdProject } from "./chase-around/chase-around-types";
 
 /**
  * {@link PerformanceCalculatorLoader} encapsulates the process of loading a performance calculator from a URL.
@@ -33,14 +34,4 @@ export class PerformanceCalculatorLoader {
     static create(fetch = fetchJson) {
         return freeze(new PerformanceCalculatorLoader(fetch), true);
     }
-}
-
-/**
- * Default JSON fetch function.
- *
- * @param src the source URL to fetch.
- */
-async function fetchJson<T>(src: URL): Promise<T> {
-    const response = await fetch(src);
-    return await response.json() as T;
 }

@@ -1,4 +1,5 @@
 import { convertUnits } from "../src";
+import { indicatedToPressureAltitude } from "../src/conversion-utils";
 
 describe("conversion-utils.ts", () => {
     describe("convertUnits()", () => {
@@ -26,6 +27,12 @@ describe("conversion-utils.ts", () => {
         });
         it("throws a descriptive error if no conversion is provided", () => {
             expect(() => convertUnits(0, "degrees celsius", "kilograms")).toThrow("No conversion: degrees celsius to kilograms");
+        });
+    });
+    describe("indicatedToPressureAltitude()", () => {
+        it("should convert indicated altitude to pressure altitude", () => {
+            expect(indicatedToPressureAltitude(2_000, 30.15)).toBeCloseTo(1_787.9, 1);
+            expect(indicatedToPressureAltitude(4_000, 27.65)).toBeCloseTo(6_167.1, 1);
         });
     });
 });

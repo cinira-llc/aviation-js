@@ -1,5 +1,15 @@
-import {freeze} from "immer";
-import {AnyUnit} from "./aviation-types";
+import { freeze } from "immer";
+import { AnyUnit } from "./aviation-types";
+
+/**
+ * Convert indicated altitude and altimeter setting (in-Hg) to pressure altitude.
+ *
+ * @param indicated indicated altitude.
+ * @param altimeter altimeter setting in inches of mercury.
+ */
+export function indicatedToPressureAltitude(indicated: number, altimeter: number) {
+    return indicated + 145442.2 * (1 - Math.pow(altimeter / 29.92, 0.190261));
+}
 
 /**
  * Convert a value from one unit to another.

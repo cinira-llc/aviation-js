@@ -1,7 +1,6 @@
 import _ from "lodash";
-import {isChaseAroundChartDef, isWpdProject} from "../../../src/performance/chase-around/chase-around-types";
-import {isChart} from "../../../src";
-import {ChaseAroundChart} from "../../../src/performance/chase-around";
+import {isChaseAroundCalcJson, isWpdProjectJson} from "../../../src/performance/chase-around/chase-around-types";
+import {ChaseAroundCalculator} from "../../../src/performance/chase-around";
 
 import type {Path} from "@mattj65817/util-js";
 
@@ -17,27 +16,12 @@ import takeoffDistanceJson from "./takeoff-distance.json";
 import takeoffDistanceProjJson from "./takeoff-distance.wpd.json";
 
 describe("ChaseAroundChart", () => {
-    describe("create()", () => {
-        it("parses the cruise-airspeed chart", () => {
-            const src = new URL("http://charts-r-us.com/cruise-airspeed.json");
-            if (!(isChaseAroundChartDef(cruiseAirspeedJson) && isWpdProject(cruiseAirspeedProjJson))) {
-                expect(true).toBe(false);
-            } else {
-                const chart = ChaseAroundChart.create(cruiseAirspeedJson, cruiseAirspeedProjJson, src);
-                expect(isChart(chart)).toBe(true);
-                expect(chart.label).toBe("Cruise Airspeed");
-                expect(chart.image.src.href).toBe("http://charts-r-us.com/cruise-airspeed.png");
-                expect(chart.image.size).toEqual([978, 692]);
-            }
-        });
-    });
     describe("calculate()", () => {
         it("solves the cruise-airspeed sample problem", () => {
-            const src = new URL("http://charts-r-us.com/cruise-airspeed.json");
-            if (!(isChaseAroundChartDef(cruiseAirspeedJson) && isWpdProject(cruiseAirspeedProjJson))) {
+            if (!(isChaseAroundCalcJson(cruiseAirspeedJson) && isWpdProjectJson(cruiseAirspeedProjJson))) {
                 expect(true).toBe(false);
             } else {
-                const chart = ChaseAroundChart.create(cruiseAirspeedJson, cruiseAirspeedProjJson, src);
+                const chart = ChaseAroundCalculator.create(cruiseAirspeedJson, cruiseAirspeedProjJson);
                 const result = chart.calculate({
                     outsideAirTemperature: 15,
                     power: 55,
@@ -53,11 +37,10 @@ describe("ChaseAroundChart", () => {
             }
         });
         it("solves the landing-distance sample problem", () => {
-            const src = new URL("http://charts-r-us.com/landing-distance.json");
-            if (!(isChaseAroundChartDef(landingDistanceJson) && isWpdProject(landingDistanceProjJson))) {
+            if (!(isChaseAroundCalcJson(landingDistanceJson) && isWpdProjectJson(landingDistanceProjJson))) {
                 expect(true).toBe(false);
             } else {
-                const chart = ChaseAroundChart.create(landingDistanceJson, landingDistanceProjJson, src);
+                const chart = ChaseAroundCalculator.create(landingDistanceJson, landingDistanceProjJson);
                 const result = chart.calculate({
                     obstacleHeight: 0,
                     outsideAirTemperature: 15,
@@ -77,11 +60,10 @@ describe("ChaseAroundChart", () => {
             }
         });
         it("solves the landing-distance-flaps-up sample problem", () => {
-            const src = new URL("http://charts-r-us.com/landing-distance-flaps-up.json");
-            if (!(isChaseAroundChartDef(landingDistanceFlapsUpJson) && isWpdProject(landingDistanceFlapsUpProjJson))) {
+            if (!(isChaseAroundCalcJson(landingDistanceFlapsUpJson) && isWpdProjectJson(landingDistanceFlapsUpProjJson))) {
                 expect(true).toBe(false);
             } else {
-                const chart = ChaseAroundChart.create(landingDistanceFlapsUpJson, landingDistanceFlapsUpProjJson, src);
+                const chart = ChaseAroundCalculator.create(landingDistanceFlapsUpJson, landingDistanceFlapsUpProjJson);
                 const result = chart.calculate({
                     obstacleHeight: 0,
                     outsideAirTemperature: 10,
@@ -101,11 +83,10 @@ describe("ChaseAroundChart", () => {
             }
         });
         it("solves the takeoff-climb-rate sample problem", () => {
-            const src = new URL("http://charts-r-us.com/takeoff-climb-rate.json");
-            if (!(isChaseAroundChartDef(takeoffClimbRateJson) && isWpdProject(takeoffClimbRateProjJson))) {
+            if (!(isChaseAroundCalcJson(takeoffClimbRateJson) && isWpdProjectJson(takeoffClimbRateProjJson))) {
                 expect(true).toBe(false);
             } else {
-                const chart = ChaseAroundChart.create(takeoffClimbRateJson, takeoffClimbRateProjJson, src);
+                const chart = ChaseAroundCalculator.create(takeoffClimbRateJson, takeoffClimbRateProjJson);
                 const result = chart.calculate({
                     outsideAirTemperature: 15,
                     pressureAltitude: 2_000,
@@ -121,11 +102,10 @@ describe("ChaseAroundChart", () => {
             }
         });
         it("solves the takeoff-distance sample problem", () => {
-            const src = new URL("http://charts-r-us.com/takeoff-distance.json");
-            if (!(isChaseAroundChartDef(takeoffDistanceJson) && isWpdProject(takeoffDistanceProjJson))) {
+            if (!(isChaseAroundCalcJson(takeoffDistanceJson) && isWpdProjectJson(takeoffDistanceProjJson))) {
                 expect(true).toBe(false);
             } else {
-                const chart = ChaseAroundChart.create(takeoffDistanceJson, takeoffDistanceProjJson, src);
+                const chart = ChaseAroundCalculator.create(takeoffDistanceJson, takeoffDistanceProjJson);
                 const result = chart.calculate({
                     obstacleHeight: 15,
                     outsideAirTemperature: 15,

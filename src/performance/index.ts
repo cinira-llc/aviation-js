@@ -1,32 +1,30 @@
-import { PerformanceCalculatorLoader } from "./PerformanceCalculatorLoader";
+import { CalculatorDefLoader } from "./CalculatorDefLoader";
 import {
-    Chart,
-    PerformanceCalculation,
-    PerformanceCalculator,
+    PerformanceResult,
+    Calculator,
     PerformanceUnit,
     PerformanceVariable,
     isAirspeed,
     isCenterOfGravity,
-    isChart,
     isClimbRate,
-    isPerformanceCalculation,
+    isPerformanceResult,
     isPower,
     isWeight,
 } from "./performance-types";
+import {createCalculator} from "./performance-utils";
 
 /* Module exports. */
 export {
-    Chart,
-    PerformanceCalculation,
-    PerformanceCalculator,
-    PerformanceCalculatorLoader,
+    PerformanceResult,
+    Calculator,
+    CalculatorDefLoader,
     PerformanceUnit,
     PerformanceVariable,
+    createCalculator,
     isAirspeed,
     isCenterOfGravity,
-    isChart,
     isClimbRate,
-    isPerformanceCalculation,
+    isPerformanceResult,
     isPower,
-    isWeight,
+    isWeight
 };

@@ -2,13 +2,13 @@ import _ from "lodash";
 import { Dimensions, isPath, Path, Point } from "@mattj65817/util-js";
 
 import { EnvironmentVariable } from "../../environment";
-import { isPerformanceCalculation, PerformanceVariable } from "..";
-import { PerformanceCalculation } from "../performance-types";
+import { isPerformanceResult, PerformanceVariable } from "..";
+import { PerformanceResult } from "../performance-types";
 
 /**
  * Structure of a chase-around chart definition JSON file.
  */
-export interface ChaseAroundChartDef {
+export interface ChaseAroundCalcJson {
     kind: "chase around";
     version: "1.0";
     label: string;
@@ -41,7 +41,7 @@ export interface ChaseAroundChartDef {
 /**
  * Results of a performance calculation produced from a chase-around chart.
  */
-export interface ChaseAroundCalculation extends PerformanceCalculation {
+export interface ChaseAroundResult extends PerformanceResult {
     /**
      * Visual path of scales which affected the solution.
      */
@@ -79,7 +79,7 @@ export type Step =
 /**
  * JSON format of a WebPlotDigitizer project file (the subset of it that we care about.)
  */
-export interface WpdProject {
+export interface WpdProjectJson {
     version: [major: 4, minor: 2];
     datasetColl: {
         name: string;
@@ -104,11 +104,11 @@ export function isChase(val: unknown): val is Chase {
 }
 
 /**
- * Type guard for {@link ChaseAroundChartDef}.
+ * Type guard for {@link ChaseAroundCalcJson}.
  *
  * @param val the value to check.
  */
-export function isChaseAroundChartDef(val: unknown): val is ChaseAroundChartDef {
+export function isChaseAroundCalcJson(val: unknown): val is ChaseAroundCalcJson {
     return _.isObject(val)
         && "kind" in val
         && "version" in val
@@ -138,11 +138,11 @@ export function isSolve(val: unknown): val is Solve {
 }
 
 /**
- * Type guard for {@link WpdProject}.
+ * Type guard for {@link WpdProjectJson}.
  *
  * @param val the value.
  */
-export function isWpdProject(val: unknown): val is WpdProject {
+export function isWpdProjectJson(val: unknown): val is WpdProjectJson {
     return _.isObject(val)
         && "datasetColl" in val
         && "version" in val
@@ -181,12 +181,12 @@ export interface Solve {
 }
 
 /**
- * Type guard for {@link ChaseAroundCalculation}.
+ * Type guard for {@link ChaseAroundResult}.
  *
  * @param val the value.
  */
-export function isChaseAroundCalculation(val: unknown): val is ChaseAroundCalculation {
-    return isPerformanceCalculation(val)
+export function isChaseAroundResult(val: unknown): val is ChaseAroundResult {
+    return isPerformanceResult(val)
         && "solution" in val
         && _.isArray(val.solution)
         && -1 === val.solution.findIndex(next => !isPath(next));

@@ -1,28 +1,34 @@
 import {freeze} from "immer";
 import _ from "lodash";
-import {ChaseAroundCalculation, isChase, isGuideCondition, isSolve} from "./chase-around-types";
+import {isChase, isGuideCondition, isSolve} from "./chase-around-types";
 import {ChaseAroundContext} from "./ChaseAroundContext";
 import {Contour} from "./Contour";
 import {Guide} from "./Guide";
 import {Scale} from "./Scale";
 
 import type {Path} from "@mattj65817/util-js";
-import type {Chase, ChaseAroundChartDef, GuideSpec, Solve, Step, WpdProject} from "./chase-around-types";
-import type {Chart, PerformanceCalculator, UnitRange} from "../performance-types";
+import type {
+    Chase,
+    ChaseAroundCalcJson,
+    ChaseAroundResult,
+    GuideSpec,
+    Solve,
+    Step,
+    WpdProjectJson
+} from "./chase-around-types";
+import type {Calculator, UnitRange} from "../performance-types";
 
 
 /**
- * {@link ChaseAroundChart} makes performance calculations based on an aviation chase-around chart.
+ * {@link ChaseAroundCalculator} makes performance calculations based on an aviation chase-around chart.
  */
-export class ChaseAroundChart implements Chart, PerformanceCalculator {
+export class ChaseAroundCalculator implements Calculator {
     private constructor(
         private readonly steps: Step[],
         private readonly guides: Record<string, Guide>,
         private readonly scales: Record<string, Scale>,
-        public readonly label: string,
         public readonly inputs: Record<string, UnitRange>,
-        public readonly outputs: Record<string, UnitRange>,
-        public readonly image: Chart["image"],
+        public readonly outputs: Record<string, UnitRange>
     ) {
     }
 
@@ -49,7 +55,7 @@ export class ChaseAroundChart implements Chart, PerformanceCalculator {
         if (!_.isEmpty(missingOutputs)) {
             throw Error(`Missing output variable(s): ${missingOutputs.sort().join(", ")}`);
         }
-        return freeze<ChaseAroundCalculation>(_.cloneDeep({
+        return freeze<ChaseAroundResult>(_.cloneDeep({
             solution: _.map(result.solution, "path"),
             scales: _.map(result.scales, "path"),
             inputs,
@@ -126,14 +132,13 @@ export class ChaseAroundChart implements Chart, PerformanceCalculator {
     }
 
     /**
-     * Create a {@link ChaseAroundChart} from the raw contents of a chart definition file and its associated
+     * Create a {@link ChaseAroundCalculator} from the raw contents of a chart definition file and its associated
      * WebPlotDigitizer project file.
      *
      * @param def the chart definition.
      * @param proj the WebPlotDigitizer project.
-     * @param src the URL from which the chart definition was loaded.
      */
-    static create(def: ChaseAroundChartDef, proj: WpdProject, src: URL) {
+    static create(def: ChaseAroundCalcJson, proj: WpdProjectJson) {
 
         /* Parse datasets from the WPD project file. */
         const datasets = _.transform(proj.datasetColl,
@@ -211,10 +216,7 @@ export class ChaseAroundChart implements Chart, PerformanceCalculator {
                 [1, Contour.create([[xMax, yMax], [xMax, 0]], "up")],
             ], "up"),
         });
-        return freeze(new ChaseAroundChart(_.cloneDeep(steps), guides, scales, def.label, inputs, outputs, {
-            src: new URL(def.image.src, src),
-            size: [width, height],
-        }), true);
+        return freeze(new ChaseAroundCalculator(_.cloneDeep(steps), guides, scales, inputs, outputs), true);
     }
 }
 

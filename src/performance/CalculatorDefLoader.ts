@@ -1,15 +1,14 @@
 import {freeze} from "immer";
 import _ from "lodash";
 import {fetchJson, GuardedJsonLoader} from "@mattj65817/util-js";
+import {isChaseAroundCalcJson, isWpdProjectJson} from "./chase-around/chase-around-types";
 
-import {ChaseAroundChart} from "./chase-around";
-import {PerformanceCalculator} from "./performance-types";
-import {isChaseAroundChartDef, isWpdProject} from "./chase-around/chase-around-types";
+import type {CalculatorDef} from "./performance-types";
 
 /**
- * {@link PerformanceCalculatorLoader} encapsulates the process of loading a performance calculator from a URL.
+ * {@link CalculatorDefLoader} encapsulates the process of loading a performance calculator definition from a URL.
  */
-export class PerformanceCalculatorLoader {
+export class CalculatorDefLoader {
     private constructor(private readonly loader: GuardedJsonLoader) {
     }
 
@@ -18,23 +17,26 @@ export class PerformanceCalculatorLoader {
      *
      * @param src the location.
      */
-    async load(src: URL): Promise<PerformanceCalculator> {
+    async load(src: URL): Promise<CalculatorDef> {
         const {loader} = this;
         const def = await loader(src, isPerformanceCalculatorDef);
-        if (isChaseAroundChartDef(def)) {
-            const proj = await loader(new URL(def.project.src, src), isWpdProject);
-            return ChaseAroundChart.create(def, proj, src);
+        if (isChaseAroundCalcJson(def)) {
+            return freeze({
+                kind: "chase around",
+                definition: def,
+                project: await loader(new URL(def.project.src, src), isWpdProjectJson)
+            }, true);
         }
         throw Error("Unsupported chart or calculator type.");
     }
 
     /**
-     * Create a {@link PerformanceCalculatorLoader} instance.
+     * Create a {@link CalculatorDefLoader} instance.
      *
      * @param loader the URL fetch callback, primarily for testing.
      */
     static create(loader = fetchJson) {
-        return freeze(new PerformanceCalculatorLoader(loader), true);
+        return freeze(new CalculatorDefLoader(loader), true);
     }
 }
 

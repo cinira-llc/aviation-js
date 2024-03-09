@@ -1,11 +1,11 @@
-import { isChaseAroundCalculation } from "./chase-around-types";
-import { ChaseAroundChart } from "./ChaseAroundChart";
+import { isChaseAroundResult } from "./chase-around-types";
+import { ChaseAroundCalculator } from "./ChaseAroundCalculator";
 
-import type { ChaseAroundCalculation } from "./chase-around-types";
+import type { ChaseAroundResult } from "./chase-around-types";
 
 /* Module exports. */
 export {
-    ChaseAroundChart,
-    ChaseAroundCalculation,
-    isChaseAroundCalculation,
+    ChaseAroundCalculator,
+    ChaseAroundResult,
+    isChaseAroundResult,
 };

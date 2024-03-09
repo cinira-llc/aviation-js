@@ -1,21 +1,23 @@
 import _ from "lodash";
 import cruiseAirspeedJson from "./chase-around/cruise-airspeed.json";
 import cruiseAirspeedProjJson from "./chase-around/cruise-airspeed.wpd.json";
-import {PerformanceCalculatorLoader} from "../../src";
-import {ChaseAroundChart, isChaseAroundCalculation} from "../../src/performance/chase-around";
+import {CalculatorDefLoader} from "../../src";
+import {ChaseAroundCalculator, isChaseAroundResult} from "../../src/performance/chase-around";
+import {createCalculator} from "../../src/performance";
 
 describe("PerformanceCalculatorLoader", () => {
     describe("load()", () => {
-        const instance = PerformanceCalculatorLoader.create(fetchTestJson);
+        const instance = CalculatorDefLoader.create(fetchTestJson);
         it("loads the cruise-airspeed chart", async () => {
-            const chart = await instance.load(new URL("http://localhost/cruise-airspeed.json"));
-            expect(chart).toBeInstanceOf(ChaseAroundChart);
+            const def = await instance.load(new URL("http://localhost/cruise-airspeed.json"));
+            const chart = createCalculator(def);
+            expect(chart).toBeInstanceOf(ChaseAroundCalculator);
             const result = chart.calculate({
                 outsideAirTemperature: 15,
                 power: 55,
                 pressureAltitude: 5_000,
             });
-            expect(isChaseAroundCalculation(result)).toBe(true);
+            expect(isChaseAroundResult(result)).toBe(true);
             expect(result.outputs["trueAirspeed"]).toBeCloseTo(118.46);
         });
     });

@@ -1,28 +1,27 @@
-import { freeze } from "immer";
+import {freeze} from "immer";
 import _ from "lodash";
-import { Dimensions, isPoint } from "@mattj65817/util-js";
-import { AnyUnit } from "../aviation-types";
+import {AnyUnit} from "../aviation-types";
+import type {ChaseAroundCalcJson, WpdProjectJson} from "./chase-around/chase-around-types";
 
 /**
- * Metadata describing a performance chart and the location(s) from which it was loaded.
+ * Definition for a chase-around calculator.
  */
-export interface Chart {
-    image: {
-        src: URL;
-        size: Dimensions;
-    };
-    label: string;
+interface ChaseAroundCalcDef {
+    kind: "chase around";
+    definition: ChaseAroundCalcJson;
+    project: WpdProjectJson;
 }
+
+/**
+ * Definitions for all supported calculator types.
+ */
+export type CalculatorDef =
+    | ChaseAroundCalcDef;
 
 /**
  * Public interface to an object which calculates one or more performance variables.
  */
-export interface PerformanceCalculator {
-
-    /**
-     * User-facing label.
-     */
-    label: string;
+export interface Calculator {
 
     /**
      * Input variable(s) required for the calculation.
@@ -44,13 +43,13 @@ export interface PerformanceCalculator {
      *
      * @param inputs the inputs.
      */
-    calculate(inputs: Record<string, number>): PerformanceCalculation;
+    calculate(inputs: Record<string, number>): PerformanceResult;
 }
 
 /**
  * Results of a performance calculation.
  */
-export interface PerformanceCalculation {
+export interface PerformanceResult {
 
     /**
      * Inputs provided to the calculation.
@@ -105,21 +104,6 @@ export function isCenterOfGravity(val: unknown): val is CenterOfGravity {
 }
 
 /**
- * Type guard for {@link Chart}.
- *
- * @param val the value.
- */
-export function isChart(val: unknown): val is Chart {
-    return _.isObject(val)
-        && "image" in val
-        && _.isObject(val.image)
-        && "src" in val.image
-        && "size" in val.image
-        && val.image.src instanceof URL
-        && isPoint(val.image.size);
-}
-
-/**
  * Type guard for {@link ClimbRate}.
  *
  * @param val the value.
@@ -129,11 +113,11 @@ export function isClimbRate(val: unknown): val is ClimbRate {
 }
 
 /**
- * Type guard for {@link PerformanceCalculation}.
+ * Type guard for {@link PerformanceResult}.
  *
  * @param val the value.
  */
-export function isPerformanceCalculation(val: unknown): val is PerformanceCalculation {
+export function isPerformanceResult(val: unknown): val is PerformanceResult {
     return _.isObject(val)
         && "inputs" in val
         && "outputs" in val

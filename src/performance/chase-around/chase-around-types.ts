@@ -4,7 +4,7 @@ import { isPerformanceResult } from "..";
 
 import type { Path, Point } from "@mattj65817/util-js";
 import type { PerformanceVariable } from "..";
-import type { PerformanceResult } from "../performance-types";
+import type { CalculatorResult } from "../performance-types";
 import type { EnvironmentVariable } from "../../environment";
 
 /**
@@ -38,7 +38,7 @@ export interface ChaseAroundCalcJson {
 /**
  * Results of a performance calculation produced from a chase-around chart.
  */
-export interface ChaseAroundResult extends PerformanceResult {
+export interface ChaseAroundResult extends CalculatorResult {
     /**
      * Visual path of scales which affected the solution.
      */

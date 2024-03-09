@@ -1,7 +1,8 @@
-import { CalculatorDefLoader } from "./CalculatorDefLoader";
+import {CalculatorDefLoader} from "./CalculatorDefLoader";
 import {
-    PerformanceResult,
     Calculator,
+    CalculatorDef,
+    CalculatorResult,
     PerformanceUnit,
     PerformanceVariable,
     isAirspeed,
@@ -15,8 +16,9 @@ import {createCalculator} from "./performance-utils";
 
 /* Module exports. */
 export {
-    PerformanceResult,
+    CalculatorResult,
     Calculator,
+    CalculatorDef,
     CalculatorDefLoader,
     PerformanceUnit,
     PerformanceVariable,

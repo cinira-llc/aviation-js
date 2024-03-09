@@ -43,13 +43,13 @@ export interface Calculator {
      *
      * @param inputs the inputs.
      */
-    calculate(inputs: Record<string, number>): PerformanceResult;
+    calculate(inputs: Record<string, number>): CalculatorResult;
 }
 
 /**
  * Results of a performance calculation.
  */
-export interface PerformanceResult {
+export interface CalculatorResult {
 
     /**
      * Inputs provided to the calculation.
@@ -113,11 +113,11 @@ export function isClimbRate(val: unknown): val is ClimbRate {
 }
 
 /**
- * Type guard for {@link PerformanceResult}.
+ * Type guard for {@link CalculatorResult}.
  *
  * @param val the value.
  */
-export function isPerformanceResult(val: unknown): val is PerformanceResult {
+export function isPerformanceResult(val: unknown): val is CalculatorResult {
     return _.isObject(val)
         && "inputs" in val
         && "outputs" in val

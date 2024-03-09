@@ -5,7 +5,7 @@ import {CalculatorDefLoader} from "../../src";
 import {ChaseAroundCalculator, isChaseAroundResult} from "../../src/performance/chase-around";
 import {createCalculator} from "../../src/performance";
 
-describe("PerformanceCalculatorLoader", () => {
+describe("CalculatorDefLoader", () => {
     describe("load()", () => {
         const instance = CalculatorDefLoader.create(fetchTestJson);
         it("loads the cruise-airspeed chart", async () => {

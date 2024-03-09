@@ -11,6 +11,7 @@ export interface Chart {
         src: URL;
         size: Dimensions;
     };
+    label: string;
 }
 
 /**

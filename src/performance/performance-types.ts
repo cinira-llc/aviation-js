@@ -20,6 +20,11 @@ export interface Chart {
 export interface PerformanceCalculator {
 
     /**
+     * User-facing label.
+     */
+    label: string;
+
+    /**
      * Input variable(s) required for the calculation.
      */
     inputs: Record<string, {

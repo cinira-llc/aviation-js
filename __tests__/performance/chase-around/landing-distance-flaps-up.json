@@ -1,11 +1,6 @@
 {
   "kind": "chase around",
   "version": "1.0",
-  "image": {
-    "src": "./landing-distance-flaps-up.png",
-    "size": [1109, 592]
-  },
-  "label": "Landing Distance (Flaps Up)",
   "project": {
     "src": "./landing-distance-flaps-up.wpd.json"
   },

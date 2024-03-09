@@ -1,11 +1,6 @@
 {
   "kind": "chase around",
   "version": "1.0",
-  "image": {
-    "src": "./takeoff-climb-rate.png",
-    "size": [1193, 811]
-  },
-  "label": "Climb Rate",
   "project": {
     "src": "./takeoff-climb-rate.wpd.json"
   },

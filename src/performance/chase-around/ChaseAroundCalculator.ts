@@ -195,25 +195,29 @@ export class ChaseAroundCalculator implements Calculator {
             }, [{} as Record<string, UnitRange>, {} as Record<string, UnitRange>]);
 
         /* Add directional guides. */
-        const {image: {size: [width, height]}} = def;
-        const xMax = width - 1;
-        const yMax = height - 1;
+        const [x, y] = _.unzip(_.flatMap(_.values(datasets), ([, [,path]]) => path));
+        x.sort(_.subtract);
+        y.sort(_.subtract);
+        const xMin = x[0];
+        const xMax = x[x.length - 1];
+        const yMin = y[0];
+        const yMax = y[y.length - 1];
         _.assign(guides, {
             down: Guide.createGuide("down", [
-                [0, Contour.create([[0, 0], [0, yMax]], "down")],
-                [1, Contour.create([[xMax, 0], [xMax, yMax]], "down")],
+                [0, Contour.create([[xMin, yMin], [xMin, yMax]], "down")],
+                [1, Contour.create([[xMax, yMin], [xMax, yMax]], "down")],
             ], "down"),
             left: Guide.createGuide("left", [
-                [0, Contour.create([[xMax, 0], [0, 0]], "left")],
-                [1, Contour.create([[xMax, yMax], [0, yMax]], "left")],
+                [0, Contour.create([[xMax, yMin], [xMin, yMin]], "left")],
+                [1, Contour.create([[xMax, yMax], [xMin, yMax]], "left")],
             ], "left"),
             right: Guide.createGuide("right", [
-                [0, Contour.create([[0, 0], [xMax, 0]], "right")],
-                [1, Contour.create([[0, yMax], [xMax, yMax]], "right")],
+                [0, Contour.create([[xMin, yMin], [xMax, yMin]], "right")],
+                [1, Contour.create([[xMin, yMax], [xMax, yMax]], "right")],
             ], "right"),
             up: Guide.createGuide("up", [
-                [0, Contour.create([[0, yMax], [0, 0]], "up")],
-                [1, Contour.create([[xMax, yMax], [xMax, 0]], "up")],
+                [0, Contour.create([[xMin, yMax], [xMin, yMin]], "up")],
+                [1, Contour.create([[xMax, yMax], [xMax, yMin]], "up")],
             ], "up"),
         });
         return freeze(new ChaseAroundCalculator(_.cloneDeep(steps), guides, scales, inputs, outputs), true);

@@ -1,9 +1,11 @@
 import _ from "lodash";
-import { Dimensions, isPath, Path, Point } from "@mattj65817/util-js";
+import { isPath } from "@mattj65817/util-js";
+import { isPerformanceResult } from "..";
 
-import { EnvironmentVariable } from "../../environment";
-import { isPerformanceResult, PerformanceVariable } from "..";
-import { PerformanceResult } from "../performance-types";
+import type { Path, Point } from "@mattj65817/util-js";
+import type { PerformanceVariable } from "..";
+import type { PerformanceResult } from "../performance-types";
+import type { EnvironmentVariable } from "../../environment";
 
 /**
  * Structure of a chase-around chart definition JSON file.
@@ -11,11 +13,6 @@ import { PerformanceResult } from "../performance-types";
 export interface ChaseAroundCalcJson {
     kind: "chase around";
     version: "1.0";
-    label: string;
-    image: {
-        src: string;
-        size: Dimensions;
-    };
     project: {
         src: string;
     };

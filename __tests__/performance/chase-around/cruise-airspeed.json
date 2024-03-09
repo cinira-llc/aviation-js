@@ -1,11 +1,6 @@
 {
   "kind": "chase around",
   "version": "1.0",
-  "image": {
-    "src": "./cruise-airspeed.png",
-    "size": [978, 692]
-  },
-  "label": "Cruise Airspeed",
   "project": {
     "src": "./cruise-airspeed.wpd.json"
   },

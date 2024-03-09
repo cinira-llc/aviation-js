@@ -11,6 +11,7 @@ import { PerformanceCalculation } from "../performance-types";
 export interface ChaseAroundChartDef {
     kind: "chase around";
     version: "1.0";
+    label: string;
     image: {
         src: string;
         size: Dimensions;

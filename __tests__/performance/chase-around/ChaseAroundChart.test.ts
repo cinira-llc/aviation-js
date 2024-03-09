@@ -1,9 +1,9 @@
 import _ from "lodash";
-import { isChaseAroundChartDef, isWpdProject } from "../../../src/performance/chase-around/chase-around-types";
-import { isChart } from "../../../src";
-import { ChaseAroundChart } from "../../../src/performance/chase-around";
+import {isChaseAroundChartDef, isWpdProject} from "../../../src/performance/chase-around/chase-around-types";
+import {isChart} from "../../../src";
+import {ChaseAroundChart} from "../../../src/performance/chase-around";
 
-import type { Path } from "@mattj65817/util-js";
+import type {Path} from "@mattj65817/util-js";
 
 import cruiseAirspeedJson from "./cruise-airspeed.json";
 import cruiseAirspeedProjJson from "./cruise-airspeed.wpd.json";
@@ -25,6 +25,7 @@ describe("ChaseAroundChart", () => {
             } else {
                 const chart = ChaseAroundChart.create(cruiseAirspeedJson, cruiseAirspeedProjJson, src);
                 expect(isChart(chart)).toBe(true);
+                expect(chart.label).toBe("Cruise Airspeed");
                 expect(chart.image.src.href).toBe("http://charts-r-us.com/cruise-airspeed.png");
                 expect(chart.image.size).toEqual([978, 692]);
             }

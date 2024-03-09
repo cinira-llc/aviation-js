@@ -5,6 +5,7 @@
     "src": "./landing-distance.png",
     "size": [1154, 697]
   },
+  "label": "Landing Distance",
   "project": {
     "src": "./landing-distance.wpd.json"
   },

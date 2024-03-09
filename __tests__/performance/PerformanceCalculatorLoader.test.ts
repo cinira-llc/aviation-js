@@ -1,8 +1,8 @@
 import _ from "lodash";
 import cruiseAirspeedJson from "./chase-around/cruise-airspeed.json";
 import cruiseAirspeedProjJson from "./chase-around/cruise-airspeed.wpd.json";
-import { PerformanceCalculatorLoader } from "../../src";
-import { ChaseAroundChart, isChaseAroundCalculation } from "../../src/performance/chase-around";
+import {PerformanceCalculatorLoader} from "../../src";
+import {ChaseAroundChart, isChaseAroundCalculation} from "../../src/performance/chase-around";
 
 describe("PerformanceCalculatorLoader", () => {
     describe("load()", () => {
@@ -21,7 +21,8 @@ describe("PerformanceCalculatorLoader", () => {
     });
 });
 
-async function fetchTestJson<T>(src: string | URL, guard?: (val: unknown) => val is T): Promise<T> {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+async function fetchTestJson<T>(src: string | URL): Promise<T> {
     switch (_.isString(src) ? src : src.href) {
         case "http://localhost/cruise-airspeed.json":
             return Promise.resolve(cruiseAirspeedJson as T);

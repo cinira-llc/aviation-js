@@ -1,14 +1,14 @@
-import { freeze } from "immer";
+import {freeze} from "immer";
 import _ from "lodash";
-import { ChaseAroundCalculation, isChase, isGuideCondition, isSolve } from "./chase-around-types";
-import { ChaseAroundContext } from "./ChaseAroundContext";
-import { Contour } from "./Contour";
-import { Guide } from "./Guide";
-import { Scale } from "./Scale";
+import {ChaseAroundCalculation, isChase, isGuideCondition, isSolve} from "./chase-around-types";
+import {ChaseAroundContext} from "./ChaseAroundContext";
+import {Contour} from "./Contour";
+import {Guide} from "./Guide";
+import {Scale} from "./Scale";
 
-import type { Path } from "@mattj65817/util-js";
-import type { Chase, ChaseAroundChartDef, GuideSpec, Solve, Step, WpdProject } from "./chase-around-types";
-import type { Chart, PerformanceCalculator, UnitRange } from "../performance-types";
+import type {Path} from "@mattj65817/util-js";
+import type {Chase, ChaseAroundChartDef, GuideSpec, Solve, Step, WpdProject} from "./chase-around-types";
+import type {Chart, PerformanceCalculator, UnitRange} from "../performance-types";
 
 
 /**
@@ -19,6 +19,7 @@ export class ChaseAroundChart implements Chart, PerformanceCalculator {
         private readonly steps: Step[],
         private readonly guides: Record<string, Guide>,
         private readonly scales: Record<string, Scale>,
+        public readonly label: string,
         public readonly inputs: Record<string, UnitRange>,
         public readonly outputs: Record<string, UnitRange>,
         public readonly image: Chart["image"],
@@ -43,7 +44,7 @@ export class ChaseAroundChart implements Chart, PerformanceCalculator {
             }
             throw Error("Unsupported step.");
         }, ChaseAroundContext.create(inputs));
-        const { outputs } = result;
+        const {outputs} = result;
         const missingOutputs = _.difference(_.keys(outputs), _.keys(this.outputs));
         if (!_.isEmpty(missingOutputs)) {
             throw Error(`Missing output variable(s): ${missingOutputs.sort().join(", ")}`);
@@ -64,7 +65,7 @@ export class ChaseAroundChart implements Chart, PerformanceCalculator {
      * @private
      */
     private doChase(context: ChaseAroundContext, step: Chase) {
-        const { chase, until } = step;
+        const {chase, until} = step;
         const contour = this.resolveContour(context, chase);
         if (null == until) {
             return context.chase(step, contour, []);
@@ -84,7 +85,7 @@ export class ChaseAroundChart implements Chart, PerformanceCalculator {
      * @private
      */
     private doSolve(context: ChaseAroundContext, step: Solve) {
-        const { solve } = step;
+        const {solve} = step;
         context = context.resolve(this.resolveContour(context, solve));
         return context.solve(this.scales[solve]);
     }
@@ -94,7 +95,7 @@ export class ChaseAroundChart implements Chart, PerformanceCalculator {
         if (!isGuideCondition(guide)) {
             name = guide;
         } else {
-            const { inputs } = context;
+            const {inputs} = context;
             const matches = _.flatMap(_.entries(guide), ([expr, guide]) => {
                 const func = new Function("inputs", `with (inputs) { return !!(${expr}); }`);
                 try {
@@ -113,7 +114,7 @@ export class ChaseAroundChart implements Chart, PerformanceCalculator {
             }
             name = matches[0];
         }
-        const { guides, scales } = this;
+        const {guides, scales} = this;
         if (name in guides) {
             return guides[name].through(context.position);
         }
@@ -136,7 +137,7 @@ export class ChaseAroundChart implements Chart, PerformanceCalculator {
 
         /* Parse datasets from the WPD project file. */
         const datasets = _.transform(proj.datasetColl,
-            (datasets, { name, data }) => {
+            (datasets, {name, data}) => {
                 const guideMatch = GUIDE.exec(name);
                 if (null != guideMatch) {
                     const [, guide, orderString] = guideMatch;
@@ -153,7 +154,7 @@ export class ChaseAroundChart implements Chart, PerformanceCalculator {
             }, {} as Record<string, [number, Path][]>);
 
         /* Parse guides and scales from the chart definition file. */
-        const guides = _.transform(_.entries(def.guides), (guides, [guide, { flow }]) => {
+        const guides = _.transform(_.entries(def.guides), (guides, [guide, {flow}]) => {
             if (!(guide in datasets)) {
                 throw Error(`Guide dataset not found: ${guide}`);
             }
@@ -164,7 +165,7 @@ export class ChaseAroundChart implements Chart, PerformanceCalculator {
                 }, [] as [number, Contour][]);
             guides[guide] = Guide.createGuide(guide, contours, flow);
         }, {} as Record<string, Guide>);
-        const scales = _.transform(_.entries(def.scales), (scales, [scale, { flow, unit, variable }]) => {
+        const scales = _.transform(_.entries(def.scales), (scales, [scale, {flow, unit, variable}]) => {
             if (!(scale in datasets)) {
                 throw Error(`Scale dataset not found: ${scale}`);
             }
@@ -177,19 +178,19 @@ export class ChaseAroundChart implements Chart, PerformanceCalculator {
         }, {} as Record<string, Scale>);
 
         /* Determine inputs and outputs from steps and scales. */
-        const { steps } = def;
+        const {steps} = def;
         const solved = _.map(steps.filter(isSolve), "solve");
         const [inputs, outputs] = _.transform(scales,
-            ([inputs, outputs], { range, unit, variable }) => {
+            ([inputs, outputs], {range, unit, variable}) => {
                 if (-1 !== solved.indexOf(variable)) {
-                    outputs[variable] = { range, unit };
+                    outputs[variable] = {range, unit};
                 } else {
-                    inputs[variable] = { range, unit };
+                    inputs[variable] = {range, unit};
                 }
             }, [{} as Record<string, UnitRange>, {} as Record<string, UnitRange>]);
 
         /* Add directional guides. */
-        const { image: { size: [width, height] } } = def;
+        const {image: {size: [width, height]}} = def;
         const xMax = width - 1;
         const yMax = height - 1;
         _.assign(guides, {
@@ -210,7 +211,7 @@ export class ChaseAroundChart implements Chart, PerformanceCalculator {
                 [1, Contour.create([[xMax, yMax], [xMax, 0]], "up")],
             ], "up"),
         });
-        return freeze(new ChaseAroundChart(_.cloneDeep(steps), guides, scales, inputs, outputs, {
+        return freeze(new ChaseAroundChart(_.cloneDeep(steps), guides, scales, def.label, inputs, outputs, {
             src: new URL(def.image.src, src),
             size: [width, height],
         }), true);

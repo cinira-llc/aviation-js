@@ -5,6 +5,7 @@
     "src": "./da40-takeoff-distance.png",
     "size": [1156, 699]
   },
+  "label": "Takeoff Distance",
   "project": {
     "src": "./da40-takeoff-distance.wpd.json"
   },

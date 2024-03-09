@@ -5,6 +5,7 @@
     "src": "./takeoff-climb-rate.png",
     "size": [1193, 811]
   },
+  "label": "Climb Rate",
   "project": {
     "src": "./takeoff-climb-rate.wpd.json"
   },

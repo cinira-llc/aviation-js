@@ -5,6 +5,7 @@
     "src": "./cruise-airspeed.png",
     "size": [978, 692]
   },
+  "label": "Cruise Airspeed",
   "project": {
     "src": "./cruise-airspeed.wpd.json"
   },

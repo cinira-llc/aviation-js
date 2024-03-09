@@ -1,5 +1,6 @@
 import { PerformanceCalculatorLoader } from "./PerformanceCalculatorLoader";
 import {
+    Chart,
     PerformanceCalculation,
     PerformanceCalculator,
     PerformanceUnit,
@@ -15,6 +16,7 @@ import {
 
 /* Module exports. */
 export {
+    Chart,
     PerformanceCalculation,
     PerformanceCalculator,
     PerformanceCalculatorLoader,

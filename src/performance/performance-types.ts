@@ -1,6 +1,8 @@
 import {freeze} from "immer";
 import _ from "lodash";
-import {AnyUnit} from "../aviation-types";
+
+import type {Dictionary} from "lodash";
+import type {AnyUnit} from "../aviation-types";
 import type {ChaseAroundCalcJson, WpdProjectJson} from "./chase-around/chase-around-types";
 
 /**
@@ -26,7 +28,7 @@ export interface Calculator {
     /**
      * Input variable(s) required for the calculation.
      */
-    inputs: Record<string, {
+    inputs: Dictionary<{
         unit: AnyUnit;
         range?: [number, number];
     }>;
@@ -34,7 +36,7 @@ export interface Calculator {
     /**
      * Output variable(s) produced by the calculation.
      */
-    outputs: Record<string, {
+    outputs: Dictionary<{
         unit: AnyUnit;
     }>;
 
@@ -43,7 +45,7 @@ export interface Calculator {
      *
      * @param inputs the inputs.
      */
-    calculate(inputs: Record<string, number>): CalculatorResult;
+    calculate(inputs: Dictionary<number>): CalculatorResult;
 }
 
 /**
@@ -54,12 +56,12 @@ export interface CalculatorResult {
     /**
      * Inputs provided to the calculation.
      */
-    inputs: Record<string, number>;
+    inputs: Dictionary<number>;
 
     /**
      * Outputs produced by the calculation.
      */
-    outputs: Record<string, number>;
+    outputs: Dictionary<number>;
 }
 
 /**

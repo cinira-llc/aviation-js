@@ -1,6 +1,7 @@
 {
   "kind": "chase around",
   "version": "1.0",
+  "size": [1156, 699],
   "project": {
     "src": "./da40-takeoff-distance.wpd.json"
   },

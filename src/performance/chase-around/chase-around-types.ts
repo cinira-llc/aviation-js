@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { isPath } from "@mattj65817/util-js";
+import {Dimensions, isPath} from "@mattj65817/util-js";
 import { isPerformanceResult } from "..";
 
 import type { Path, Point } from "@mattj65817/util-js";
@@ -13,6 +13,7 @@ import type { EnvironmentVariable } from "../../environment";
 export interface ChaseAroundCalcJson {
     kind: "chase around";
     version: "1.0";
+    size: Dimensions;
     project: {
         src: string;
     };

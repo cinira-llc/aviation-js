@@ -1,6 +1,7 @@
 {
   "kind": "chase around",
   "version": "1.0",
+  "size": [1154, 697],
   "project": {
     "src": "./landing-distance.wpd.json"
   },

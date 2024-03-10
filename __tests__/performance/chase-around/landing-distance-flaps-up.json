@@ -1,6 +1,7 @@
 {
   "kind": "chase around",
   "version": "1.0",
+  "size": [1109, 592],
   "project": {
     "src": "./landing-distance-flaps-up.wpd.json"
   },

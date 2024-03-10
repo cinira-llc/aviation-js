@@ -1,6 +1,7 @@
 {
   "kind": "chase around",
   "version": "1.0",
+  "size": [1193, 811],
   "project": {
     "src": "./takeoff-climb-rate.wpd.json"
   },

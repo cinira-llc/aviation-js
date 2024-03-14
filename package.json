@@ -29,12 +29,14 @@
   "author": "Matt Jensen <mjensen65816@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "@mattj65817/util-js": "^1.5.7"
+    "@mattj65817/util-js": "^1.5.14",
+    "robust-point-in-polygon": "^1.0.3"
   },
   "devDependencies": {
     "@mattj65817/test-js": "^1.1.3",
     "@types/jest": "^29.5.12",
     "@types/lodash": "^4.14.202",
+    "@types/robust-point-in-polygon": "^1.0.3",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
     "@typescript-eslint/parser": "^7.1.0",
     "eslint": "^8.57.0",

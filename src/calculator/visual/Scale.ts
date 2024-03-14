@@ -5,7 +5,7 @@ import { Flow, Flows } from "./Flows";
 import { Guide } from "./Guide";
 
 import type { AnyUnit } from "../../aviation-types";
-import type { Direction } from "./chase-around-types";
+import type { Direction } from "./visual-types";
 
 export class Scale extends Guide {
     private constructor(

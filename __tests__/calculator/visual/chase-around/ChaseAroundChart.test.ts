@@ -1,7 +1,8 @@
 import _ from "lodash";
-import { isChaseAroundChartDef, isWpdProject } from "../../../src/performance/chase-around/chase-around-types";
-import { isChart } from "../../../src";
-import { ChaseAroundChart } from "../../../src/performance/chase-around";
+import { isChart } from "../../../../src";
+import { isChaseAroundChartDef } from "../../../../src/calculator/visual/chase-around/chase-around-types";
+import { isWpdProject } from "../../../../src/calculator/visual/web-plot-digitizer/web-plot-digitizer-types";
+import { ChaseAroundChart } from "../../../../src/calculator/visual/chase-around";
 
 import type { Path } from "@mattj65817/util-js";
 

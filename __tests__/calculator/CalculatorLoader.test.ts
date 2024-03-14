@@ -1,12 +1,13 @@
 import _ from "lodash";
-import cruiseAirspeedJson from "./chase-around/cruise-airspeed.json";
-import cruiseAirspeedProjJson from "./chase-around/cruise-airspeed.wpd.json";
-import { PerformanceCalculatorLoader } from "../../src";
-import { ChaseAroundChart, isChaseAroundCalculation } from "../../src/performance/chase-around";
+import { CalculatorLoader } from "../../src";
+import { ChaseAroundChart, isChaseAroundCalculation } from "../../src/calculator/visual/chase-around";
 
-describe("PerformanceCalculatorLoader", () => {
+import cruiseAirspeedJson from "../calculator/visual/chase-around/cruise-airspeed.json";
+import cruiseAirspeedProjJson from "../calculator/visual/chase-around/cruise-airspeed.wpd.json";
+
+describe("CalculatorLoader", () => {
     describe("load()", () => {
-        const instance = PerformanceCalculatorLoader.create(fetchTestJson);
+        const instance = CalculatorLoader.create(fetchTestJson);
         it("loads the cruise-airspeed chart", async () => {
             const chart = await instance.load(new URL("http://localhost/cruise-airspeed.json"));
             expect(chart).toBeInstanceOf(ChaseAroundChart);
@@ -21,7 +22,7 @@ describe("PerformanceCalculatorLoader", () => {
     });
 });
 
-async function fetchTestJson<T>(src: string | URL, guard?: (val: unknown) => val is T): Promise<T> {
+async function fetchTestJson<T>(src: string | URL): Promise<T> {
     switch (_.isString(src) ? src : src.href) {
         case "http://localhost/cruise-airspeed.json":
             return Promise.resolve(cruiseAirspeedJson as T);

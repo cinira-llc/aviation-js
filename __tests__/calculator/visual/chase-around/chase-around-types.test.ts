@@ -1,6 +1,7 @@
 import cruiseAirspeedJson from "./cruise-airspeed.json";
 import cruiseAirspeedProjJson from "./cruise-airspeed.wpd.json";
-import { isChaseAroundChartDef, isWpdProject } from "../../../src/performance/chase-around/chase-around-types";
+import { isChaseAroundChartDef } from "../../../../src/calculator/visual/chase-around/chase-around-types";
+import { isWpdProject } from "../../../../src/calculator/visual/web-plot-digitizer/web-plot-digitizer-types";
 
 describe("chase-around-types.ts", () => {
     describe("isChaseAroundChartDef()", () => {

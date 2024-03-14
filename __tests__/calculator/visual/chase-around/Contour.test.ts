@@ -1,5 +1,4 @@
-import { Contour } from "../../../src/performance/chase-around/Contour";
-import { intersection } from "@mattj65817/util-js";
+import { Contour } from "../../../../src/calculator/visual/Contour";
 
 describe("Contour", () => {
     describe("create()", () => {

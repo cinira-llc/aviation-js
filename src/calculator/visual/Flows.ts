@@ -1,6 +1,8 @@
-import {Direction} from "./chase-around-types";
-import {Path, Point, sortedPath} from "@mattj65817/util-js";
-import {freeze} from "immer";
+import { freeze } from "immer";
+import { sortedPath } from "@mattj65817/util-js";
+
+import type { Path, Point } from "@mattj65817/util-js";
+import type { Direction } from "./visual-types";
 
 /**
  * {@link Flow} defines operations that vary according to the axial flow of a guide or contour.
@@ -56,7 +58,7 @@ export const Flows = freeze<Record<Direction, Flow>>({
         point: (pos, val) => [val, pos],
         position: pt => pt[1],
         value: pt => pt[0],
-        sort: path => sortedPath(path, true)
+        sort: path => sortedPath(path, true),
     },
     left: {
         dir: "left",
@@ -64,7 +66,7 @@ export const Flows = freeze<Record<Direction, Flow>>({
         point: (pos, val) => [pos, val],
         position: pt => pt[0],
         value: pt => pt[1],
-        sort: path => sortedPath(path, false, true)
+        sort: path => sortedPath(path, false, true),
     },
     right: {
         dir: "right",
@@ -72,7 +74,7 @@ export const Flows = freeze<Record<Direction, Flow>>({
         point: (pos, val) => [pos, val],
         position: pt => pt[0],
         value: pt => pt[1],
-        sort: path => sortedPath(path)
+        sort: path => sortedPath(path),
     },
     up: {
         dir: "up",
@@ -80,6 +82,6 @@ export const Flows = freeze<Record<Direction, Flow>>({
         point: (pos, val) => [val, pos],
         position: pt => pt[1],
         value: pt => pt[0],
-        sort: path => sortedPath(path, true, true)
-    }
+        sort: path => sortedPath(path, true, true),
+    },
 });

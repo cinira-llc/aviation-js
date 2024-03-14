@@ -1,20 +1,23 @@
 import { freeze } from "immer";
 import _ from "lodash";
-import { ChaseAroundCalculation, isChase, isGuideCondition, isSolve } from "./chase-around-types";
+import { isChase, isGuideCondition, isSolve } from "./chase-around-types";
+import { Contour } from "../Contour";
+import { Guide } from "../Guide";
+import { Scale } from "../Scale";
 import { ChaseAroundContext } from "./ChaseAroundContext";
-import { Contour } from "./Contour";
-import { Guide } from "./Guide";
-import { Scale } from "./Scale";
 
 import type { Path } from "@mattj65817/util-js";
-import type { Chase, ChaseAroundChartDef, GuideSpec, Solve, Step, WpdProject } from "./chase-around-types";
-import type { Chart, PerformanceCalculator, UnitRange } from "../performance-types";
+import type { UnitRange } from "../../../performance/performance-types";
+import type { Calculator } from "../../calculator-types";
+import type { Chase, ChaseAroundCalculation, ChaseAroundChartDef, GuideSpec, Solve, Step } from "./chase-around-types";
+import type { WpdProjectJson } from "../web-plot-digitizer/web-plot-digitizer-types";
+import type { Chart } from "../visual-types";
 
 
 /**
  * {@link ChaseAroundChart} makes performance calculations based on an aviation chase-around chart.
  */
-export class ChaseAroundChart implements Chart, PerformanceCalculator {
+export class ChaseAroundChart implements Chart, Calculator {
     private constructor(
         private readonly steps: Step[],
         private readonly guides: Record<string, Guide>,
@@ -132,7 +135,7 @@ export class ChaseAroundChart implements Chart, PerformanceCalculator {
      * @param proj the WebPlotDigitizer project.
      * @param src the URL from which the chart definition was loaded.
      */
-    static create(def: ChaseAroundChartDef, proj: WpdProject, src: URL) {
+    static create(def: ChaseAroundChartDef, proj: WpdProjectJson, src: URL) {
 
         /* Parse datasets from the WPD project file. */
         const datasets = _.transform(proj.datasetColl,

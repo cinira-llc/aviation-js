@@ -1,13 +1,15 @@
 import { freeze } from "immer";
 import { fetchJson } from "@mattj65817/util-js";
-import { ChaseAroundChart } from "./chase-around";
-import { PerformanceCalculator } from "./performance-types";
-import { isChaseAroundChartDef, WpdProject } from "./chase-around/chase-around-types";
+import { ChaseAroundChart } from "./visual/chase-around";
+import { isChaseAroundChartDef } from "./visual/chase-around/chase-around-types";
+
+import type { WpdProjectJson } from "./visual/web-plot-digitizer/web-plot-digitizer-types";
+import type { Calculator } from ".";
 
 /**
- * {@link PerformanceCalculatorLoader} encapsulates the process of loading a performance calculator from a URL.
+ * {@link CalculatorLoader} encapsulates the process of loading a performance calculator from a URL.
  */
-export class PerformanceCalculatorLoader {
+export class CalculatorLoader {
     private constructor(private readonly fetch: typeof fetchJson) {
     }
 
@@ -16,22 +18,22 @@ export class PerformanceCalculatorLoader {
      *
      * @param src the location.
      */
-    async load(src: URL): Promise<PerformanceCalculator> {
+    async load(src: URL): Promise<Calculator> {
         const { fetch } = this;
         const def = await fetch<{ kind: string }>(src);
         if (isChaseAroundChartDef(def)) {
-            const proj = await fetch<WpdProject>(new URL(def.project.src, src));
+            const proj = await fetch<WpdProjectJson>(new URL(def.project.src, src));
             return ChaseAroundChart.create(def, proj, src);
         }
         throw Error("Unsupported chart or calculator type.");
     }
 
     /**
-     * Create a {@link PerformanceCalculatorLoader} instance.
+     * Create a {@link CalculatorLoader} instance.
      *
      * @param fetch the URL fetch callback, primarily for testing.
      */
     static create(fetch = fetchJson) {
-        return freeze(new PerformanceCalculatorLoader(fetch), true);
+        return freeze(new CalculatorLoader(fetch), true);
     }
 }

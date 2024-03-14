@@ -1,11 +1,11 @@
 import { freeze } from "immer";
 import _ from "lodash";
-import { Box, interpolateBy, sortedInterpolate } from "@mattj65817/util-js";
+import { interpolateBy, sortedInterpolate } from "@mattj65817/util-js";
 import { Contour } from "./Contour";
 import { Flow, Flows } from "./Flows";
 
-import type { Point } from "@mattj65817/util-js";
-import type { Direction } from "./chase-around-types";
+import type { Box, Point } from "@mattj65817/util-js";
+import type { Direction } from "./visual-types";
 
 export class Guide {
 

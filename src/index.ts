@@ -1,28 +1,29 @@
 import { AnyUnit, AnyVariable, isFlightPosition, isGeoCoordinates, isModeSCode } from "./aviation-types";
 import { convertUnits } from "./conversion-utils";
-import { PerformanceCalculatorLoader, isChart, isPerformanceCalculation } from "./performance";
-import { isChaseAroundCalculation } from "./performance/chase-around";
+import { CalculatorLoader, isCalculation } from "./calculator";
+import { isChart } from "./calculator/visual";
+import { isChaseAroundCalculation } from "./calculator/visual/chase-around";
 
 import type { FlightPosition, GeoCoordinates, ModeSCode } from "./aviation-types";
-import type { PerformanceCalculation, PerformanceCalculator } from "./performance";
-import type { ChaseAroundCalculation } from "./performance/chase-around";
+import type { Calculation, Calculator } from "./calculator";
+import type { ChaseAroundCalculation } from "./calculator/visual/chase-around";
 
 /* Library exports. */
 export {
     AnyUnit,
     AnyVariable,
+    Calculation,
+    Calculator,
+    CalculatorLoader,
     ChaseAroundCalculation,
     FlightPosition,
     GeoCoordinates,
     ModeSCode,
-    PerformanceCalculation,
-    PerformanceCalculator,
-    PerformanceCalculatorLoader,
     convertUnits,
+    isCalculation,
     isChaseAroundCalculation,
     isChart,
     isFlightPosition,
     isGeoCoordinates,
     isModeSCode,
-    isPerformanceCalculation,
 };

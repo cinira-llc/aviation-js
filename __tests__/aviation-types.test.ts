@@ -1,4 +1,4 @@
-import {isFlightPosition, isGeoCoordinates, isModeSCode} from "../src/aviation-types";
+import {isFlightPosition, isGeoCoordinates, isModeSCode} from "../src";
 
 describe("aviation-types.ts", () => {
     describe("isModeSCode()", () => {

@@ -1,5 +1,5 @@
-import { Contour } from "../../../src/performance/chase-around/Contour";
-import { Guide } from "../../../src/performance/chase-around/Guide";
+import { Contour } from "../../../../src/calculator/visual/Contour";
+import { Guide } from "../../../../src/calculator/visual/Guide";
 
 describe("Guide", () => {
     describe("at()", () => {

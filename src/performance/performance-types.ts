@@ -1,68 +1,7 @@
-import {freeze} from "immer";
+import { freeze } from "immer";
 import _ from "lodash";
 
-import type {Dictionary} from "lodash";
-import type {AnyUnit} from "../aviation-types";
-import type {ChaseAroundCalcJson, WpdProjectJson} from "./chase-around/chase-around-types";
-
-/**
- * Definition for a chase-around calculator.
- */
-interface ChaseAroundCalcDef {
-    kind: "chase around";
-    definition: ChaseAroundCalcJson;
-    project: WpdProjectJson;
-}
-
-/**
- * Definitions for all supported calculator types.
- */
-export type CalculatorDef =
-    | ChaseAroundCalcDef;
-
-/**
- * Public interface to an object which calculates one or more performance variables.
- */
-export interface Calculator {
-
-    /**
-     * Input variable(s) required for the calculation.
-     */
-    inputs: Dictionary<{
-        unit: AnyUnit;
-        range?: [number, number];
-    }>;
-
-    /**
-     * Output variable(s) produced by the calculation.
-     */
-    outputs: Dictionary<{
-        unit: AnyUnit;
-    }>;
-
-    /**
-     * Calculate output(s) from input(s).
-     *
-     * @param inputs the inputs.
-     */
-    calculate(inputs: Dictionary<number>): CalculatorResult;
-}
-
-/**
- * Results of a performance calculation.
- */
-export interface CalculatorResult {
-
-    /**
-     * Inputs provided to the calculation.
-     */
-    inputs: Dictionary<number>;
-
-    /**
-     * Outputs produced by the calculation.
-     */
-    outputs: Dictionary<number>;
-}
+import type { AnyUnit } from "../aviation-types";
 
 /**
  * All performance-related units.
@@ -112,19 +51,6 @@ export function isCenterOfGravity(val: unknown): val is CenterOfGravity {
  */
 export function isClimbRate(val: unknown): val is ClimbRate {
     return isPerformanceVariableOf(val, CLIMB_RATE, CLIMB_RATE_UNIT);
-}
-
-/**
- * Type guard for {@link CalculatorResult}.
- *
- * @param val the value.
- */
-export function isPerformanceResult(val: unknown): val is CalculatorResult {
-    return _.isObject(val)
-        && "inputs" in val
-        && "outputs" in val
-        && _.isObject(val.inputs)
-        && _.isObject(val.outputs);
 }
 
 /**

@@ -1,23 +1,21 @@
-import {freeze} from "immer";
-import _ from "lodash";
-import {isChase, isGuideCondition, isSolve} from "./chase-around-types";
-import {ChaseAroundContext} from "./ChaseAroundContext";
-import {Contour} from "./Contour";
-import {Guide} from "./Guide";
-import {Scale} from "./Scale";
+import { freeze } from "immer";
+import _, { Dictionary } from "lodash";
+import { isChase, isGuideCondition, isSolve } from "./chase-around-types";
+import { ChaseAroundContext } from "./ChaseAroundContext";
+import { Contour, Guide, Scale } from "../../charts";
 
-import type {Path} from "@mattj65817/util-js";
 import type {
     Chase,
     ChaseAroundCalcJson,
-    ChaseAroundResult,
+    ChaseAroundCalculation,
     GuideSpec,
     Solve,
     Step,
-    WpdProjectJson
+    WpdProjectJson,
 } from "./chase-around-types";
-import type {Calculator, UnitRange} from "../performance-types";
-
+import { Calculator } from "../calculator-types";
+import { UnitRange } from "../../performance/performance-types";
+import { WpdProject } from "../../web-plot-digitizer";
 
 /**
  * {@link ChaseAroundCalculator} makes performance calculations based on an aviation chase-around chart.
@@ -28,7 +26,7 @@ export class ChaseAroundCalculator implements Calculator {
         private readonly guides: Record<string, Guide>,
         private readonly scales: Record<string, Scale>,
         public readonly inputs: Record<string, UnitRange>,
-        public readonly outputs: Record<string, UnitRange>
+        public readonly outputs: Record<string, UnitRange>,
     ) {
     }
 
@@ -50,12 +48,12 @@ export class ChaseAroundCalculator implements Calculator {
             }
             throw Error("Unsupported step.");
         }, ChaseAroundContext.create(inputs));
-        const {outputs} = result;
+        const { outputs } = result;
         const missingOutputs = _.difference(_.keys(outputs), _.keys(this.outputs));
         if (!_.isEmpty(missingOutputs)) {
             throw Error(`Missing output variable(s): ${missingOutputs.sort().join(", ")}`);
         }
-        return freeze<ChaseAroundResult>(_.cloneDeep({
+        return freeze<ChaseAroundCalculation>(_.cloneDeep({
             solution: _.map(result.solution, "path"),
             scales: _.map(result.scales, "path"),
             inputs,
@@ -71,7 +69,7 @@ export class ChaseAroundCalculator implements Calculator {
      * @private
      */
     private doChase(context: ChaseAroundContext, step: Chase) {
-        const {chase, until} = step;
+        const { chase, until } = step;
         const contour = this.resolveContour(context, chase);
         if (null == until) {
             return context.chase(step, contour, []);
@@ -91,7 +89,7 @@ export class ChaseAroundCalculator implements Calculator {
      * @private
      */
     private doSolve(context: ChaseAroundContext, step: Solve) {
-        const {solve} = step;
+        const { solve } = step;
         context = context.resolve(this.resolveContour(context, solve));
         return context.solve(this.scales[solve]);
     }
@@ -101,7 +99,7 @@ export class ChaseAroundCalculator implements Calculator {
         if (!isGuideCondition(guide)) {
             name = guide;
         } else {
-            const {inputs} = context;
+            const { inputs } = context;
             const matches = _.flatMap(_.entries(guide), ([expr, guide]) => {
                 const func = new Function("inputs", `with (inputs) { return !!(${expr}); }`);
                 try {
@@ -120,7 +118,7 @@ export class ChaseAroundCalculator implements Calculator {
             }
             name = matches[0];
         }
-        const {guides, scales} = this;
+        const { guides, scales } = this;
         if (name in guides) {
             return guides[name].through(context.position);
         }
@@ -139,58 +137,23 @@ export class ChaseAroundCalculator implements Calculator {
      * @param proj the WebPlotDigitizer project.
      */
     static create(def: ChaseAroundCalcJson, proj: WpdProjectJson) {
-
-        /* Parse datasets from the WPD project file. */
-        const datasets = _.transform(proj.datasetColl,
-            (datasets, {name, data}) => {
-                const guideMatch = GUIDE.exec(name);
-                if (null != guideMatch) {
-                    const [, guide, orderString] = guideMatch;
-                    const order = parseFloat(orderString);
-                    (datasets[guide] = datasets[guide] || []).push([order, _.map(data, "value")]);
-                } else {
-                    const scaleMatch = SCALE.exec(name);
-                    if (null != scaleMatch) {
-                        const [, scale, valueString] = scaleMatch;
-                        const value = parseFloat(valueString);
-                        (datasets[scale] = datasets[scale] || []).push([value, _.map(data, "value")]);
-                    }
-                }
-            }, {} as Record<string, [number, Path][]>);
-
-        /* Parse guides and scales from the chart definition file. */
-        const guides = _.transform(_.entries(def.guides), (guides, [guide, {flow}]) => {
-            if (!(guide in datasets)) {
-                throw Error(`Guide dataset not found: ${guide}`);
-            }
-            const dataset = datasets[guide].sort(([v0], [v1]) => v0 - v1);
-            const contours = _.transform(dataset,
-                (acc, [order, path]) => {
-                    acc.push([order, Contour.create(path, flow)]);
-                }, [] as [number, Contour][]);
-            guides[guide] = Guide.createGuide(guide, contours, flow);
-        }, {} as Record<string, Guide>);
-        const scales = _.transform(_.entries(def.scales), (scales, [scale, {flow, unit, variable}]) => {
-            if (!(scale in datasets)) {
-                throw Error(`Scale dataset not found: ${scale}`);
-            }
-            const dataset = datasets[scale].sort(([v0], [v1]) => v0 - v1);
-            const contours = _.transform(dataset,
-                (acc, [value, path]) => {
-                    acc.push([value, Contour.create(path, flow)]);
-                }, [] as [number, Contour][]);
-            scales[scale] = Scale.createScale(scale, variable || scale, unit, contours, flow);
+        const project = WpdProject.create(proj);
+        const guides = _.transform(_.entries(def.guides), (guides, [name, { flow }]) => {
+            guides[name] = project.guide(name, flow);
+        }, {} as Dictionary<Guide>);
+        const scales = _.transform(_.entries(def.scales), (scales, [scale, { flow, unit, variable }]) => {
+            scales[scale] = project.scale(scale, variable || scale, unit, flow);
         }, {} as Record<string, Scale>);
 
         /* Determine inputs and outputs from steps and scales. */
-        const {steps} = def;
+        const { steps } = def;
         const solved = _.map(steps.filter(isSolve), "solve");
         const [inputs, outputs] = _.transform(scales,
-            ([inputs, outputs], {range, unit, variable}) => {
+            ([inputs, outputs], { range, unit, variable }) => {
                 if (-1 !== solved.indexOf(variable)) {
-                    outputs[variable] = {range, unit};
+                    outputs[variable] = { range, unit };
                 } else {
-                    inputs[variable] = {range, unit};
+                    inputs[variable] = { range, unit };
                 }
             }, [{} as Record<string, UnitRange>, {} as Record<string, UnitRange>]);
 
@@ -217,17 +180,3 @@ export class ChaseAroundCalculator implements Calculator {
         return freeze(new ChaseAroundCalculator(_.cloneDeep(steps), guides, scales, inputs, outputs), true);
     }
 }
-
-/**
- * Name pattern for a guide dataset.
- *
- * @private
- */
-export const GUIDE = freeze(/^guide:([^=]+)@(0|(-?[1-9]\d*))$/, true);
-
-/**
- * Name pattern for a guide dataset.
- *
- * @private
- */
-export const SCALE = freeze(/^scale:([^=]+)=(0|(-?[1-9]\d*))$/, true);

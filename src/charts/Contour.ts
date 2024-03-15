@@ -4,7 +4,7 @@ import { intersection, pickAdjacentBy, scaledPath, sortedInterpolate } from "@ma
 import { Flows } from "./Flows";
 
 import type { Path, Point } from "@mattj65817/util-js";
-import type { Direction } from "./chase-around-types";
+import type { Direction } from ".";
 import type { Flow } from "./Flows";
 
 /**

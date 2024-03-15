@@ -3,7 +3,7 @@ import _ from "lodash";
 import {fetchJson, GuardedJsonLoader} from "@mattj65817/util-js";
 import {isChaseAroundCalcJson, isWpdProjectJson} from "./chase-around/chase-around-types";
 
-import type {CalculatorDef} from "./performance-types";
+import type {CalculatorDef} from ".";
 
 /**
  * {@link CalculatorDefLoader} encapsulates the process of loading a performance calculator definition from a URL.

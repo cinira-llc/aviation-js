@@ -1,11 +1,12 @@
 import _ from "lodash";
-import {Dimensions, isPath} from "@mattj65817/util-js";
-import { isPerformanceResult } from "..";
+import { Dimensions, isPath } from "@mattj65817/util-js";
 
 import type { Path, Point } from "@mattj65817/util-js";
-import type { PerformanceVariable } from "..";
-import type { CalculatorResult } from "../performance-types";
+import type { PerformanceVariable } from "../../performance";
+import type { Calculation } from "..";
 import type { EnvironmentVariable } from "../../environment";
+import { isCalculation } from "../calculator-types";
+import { Direction } from "../../charts";
 
 /**
  * Structure of a chase-around chart definition JSON file.
@@ -39,7 +40,7 @@ export interface ChaseAroundCalcJson {
 /**
  * Results of a performance calculation produced from a chase-around chart.
  */
-export interface ChaseAroundResult extends CalculatorResult {
+export interface ChaseAroundCalculation extends Calculation {
     /**
      * Visual path of scales which affected the solution.
      */
@@ -50,15 +51,6 @@ export interface ChaseAroundResult extends CalculatorResult {
      */
     solution: Path[];
 }
-
-/**
- * Cardinal direction through a chase-around chart.
- */
-export type Direction =
-    | "down"
-    | "left"
-    | "right"
-    | "up";
 
 /**
  * Conditional hash of JavaScript expressions to guide or scale names.
@@ -179,12 +171,12 @@ export interface Solve {
 }
 
 /**
- * Type guard for {@link ChaseAroundResult}.
+ * Type guard for {@link ChaseAroundCalculation}.
  *
  * @param val the value.
  */
-export function isChaseAroundResult(val: unknown): val is ChaseAroundResult {
-    return isPerformanceResult(val)
+export function isChaseAroundCalculation(val: unknown): val is ChaseAroundCalculation {
+    return isCalculation(val)
         && "solution" in val
         && _.isArray(val.solution)
         && -1 === val.solution.findIndex(next => !isPath(next));

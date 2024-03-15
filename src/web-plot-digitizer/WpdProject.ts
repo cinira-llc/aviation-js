@@ -24,14 +24,11 @@ export class WpdProject {
     public area(name: string): Path {
         const [[, area]] = this.dataset(`area:${name}`);
         const mid: Point = [_.mean(_.map(area, 0)), _.mean(_.map(area, 1))];
-        console.log("area", area);
-        console.log("mid", mid);
         const path = polarToCartesian(cartesianToPolar(area, mid)
             .sort(([, t0], [, t1]) => t0 - t1), mid);
         if (!_.isEqual(path[0], _.last(path))) {
             path.push(path[0]);
         }
-        console.log("path", path);
         return path;
     }
 

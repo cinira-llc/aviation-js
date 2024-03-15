@@ -1,6 +1,6 @@
 import {ChaseAroundCalculator} from "./chase-around";
 
-import type {CalculatorDef, Calculator} from "./performance-types";
+import type {CalculatorDef, Calculator} from ".";
 
 /**
  * Create a performance calculator from a definition object.

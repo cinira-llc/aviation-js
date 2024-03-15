@@ -1,5 +1,4 @@
-import { Contour } from "../../../src/performance/chase-around/Contour";
-import { Guide } from "../../../src/performance/chase-around/Guide";
+import { Contour, Guide } from "../../src/charts";
 
 describe("Guide", () => {
     describe("at()", () => {

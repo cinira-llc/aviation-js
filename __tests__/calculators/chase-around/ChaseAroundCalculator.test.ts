@@ -1,8 +1,8 @@
 import _ from "lodash";
-import {isChaseAroundCalcJson, isWpdProjectJson} from "../../../src/performance/chase-around/chase-around-types";
-import {ChaseAroundCalculator} from "../../../src/performance/chase-around";
+import { isChaseAroundCalcJson, isWpdProjectJson } from "../../../src/calculators/chase-around/chase-around-types";
+import { ChaseAroundCalculator } from "../../../src/calculators/chase-around";
 
-import type {Path} from "@mattj65817/util-js";
+import type { Path } from "@mattj65817/util-js";
 
 import cruiseAirspeedJson from "./cruise-airspeed.json";
 import cruiseAirspeedProjJson from "./cruise-airspeed.wpd.json";

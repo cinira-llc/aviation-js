@@ -4,8 +4,8 @@ import { Contour } from "./Contour";
 import { Flow, Flows } from "./Flows";
 import { Guide } from "./Guide";
 
-import type { AnyUnit } from "../../aviation-types";
-import type { Direction } from "./chase-around-types";
+import type { AnyUnit } from "../aviation-types";
+import type { Direction } from ".";
 
 export class Scale extends Guide {
     private constructor(

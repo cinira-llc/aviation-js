@@ -1,7 +1,6 @@
 import { freeze } from "immer";
 import _ from "lodash";
-import { Contour } from "./Contour";
-import { Scale } from "./Scale";
+import { Contour, Scale } from "../../charts";
 
 import type { Path } from "@mattj65817/util-js";
 import type { Chase } from "./chase-around-types";

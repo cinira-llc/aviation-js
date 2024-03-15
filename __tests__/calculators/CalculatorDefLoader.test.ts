@@ -1,9 +1,10 @@
 import _ from "lodash";
+import { CalculatorDefLoader } from "../../src";
+import { ChaseAroundCalculator, isChaseAroundCalculation } from "../../src/calculators/chase-around";
+import { createCalculator } from "../../src";
+
 import cruiseAirspeedJson from "./chase-around/cruise-airspeed.json";
 import cruiseAirspeedProjJson from "./chase-around/cruise-airspeed.wpd.json";
-import {CalculatorDefLoader} from "../../src";
-import {ChaseAroundCalculator, isChaseAroundResult} from "../../src/performance/chase-around";
-import {createCalculator} from "../../src/performance";
 
 describe("CalculatorDefLoader", () => {
     describe("load()", () => {
@@ -17,7 +18,7 @@ describe("CalculatorDefLoader", () => {
                 power: 55,
                 pressureAltitude: 5_000,
             });
-            expect(isChaseAroundResult(result)).toBe(true);
+            expect(isChaseAroundCalculation(result)).toBe(true);
             expect(result.outputs["trueAirspeed"]).toBeCloseTo(118.46);
         });
     });

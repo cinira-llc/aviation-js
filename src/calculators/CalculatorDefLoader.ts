@@ -1,9 +1,11 @@
 import {freeze} from "immer";
 import _ from "lodash";
 import {fetchJson, GuardedJsonLoader} from "@mattj65817/util-js";
-import {isChaseAroundCalcJson, isWpdProjectJson} from "./chase-around/chase-around-types";
+import {isChaseAroundCalcJson} from "./chase-around/chase-around-types";
+import {isWpdProjectJson} from "../web-plot-digitizer/web-plot-digitizer-types";
 
 import type {CalculatorDef} from ".";
+import {isLoadEnvelopeCalcJson} from "./load-envelope/load-envelope-types";
 
 /**
  * {@link CalculatorDefLoader} encapsulates the process of loading a performance calculator definition from a URL.
@@ -23,6 +25,12 @@ export class CalculatorDefLoader {
         if (isChaseAroundCalcJson(def)) {
             return freeze({
                 kind: "chase around",
+                definition: def,
+                project: await loader(new URL(def.project.src, src), isWpdProjectJson)
+            }, true);
+        } else if (isLoadEnvelopeCalcJson(def)) {
+            return freeze({
+                kind: "load envelope",
                 definition: def,
                 project: await loader(new URL(def.project.src, src), isWpdProjectJson)
             }, true);

@@ -1,0 +1,43 @@
+{
+  "kind": "load-envelope",
+  "version": "1",
+  "size": [647, 581],
+  "project": {
+    "src": "./center-of-gravity-range.wpd.json"
+  },
+  "scales": {
+    "centerOfGravity": {
+      "flow": "up",
+      "unit": "meters aft of datum"
+    },
+    "weight": {
+      "flow": "right",
+      "unit": "kilograms"
+    }
+  },
+  "areas":[
+    {
+      "area": "standardTankGrossWeightIncrease",
+      "withinLimits": false
+    },
+    {
+      "area": "standardTankOnly",
+      "withinLimits": false
+    },
+    {
+      "area": "grossWeightIncreaseOnly",
+      "withinLimits": true,
+      "category": "normal"
+    },
+    {
+      "area": "utility",
+      "withinLimits": true,
+      "category": "utility"
+    },
+    {
+      "area": "envelope",
+      "withinLimits": true,
+      "category": "normal"
+    }
+  ]
+}

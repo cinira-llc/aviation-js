@@ -159,4 +159,4 @@ const GUIDE = freeze(/^guide:([^=]+)@(0|(-?[1-9]\d*))$/, true);
  *
  * @private
  */
-const SCALE = freeze(/^scale:([^=]+)=(0|(-?[1-9]\d*))$/, true);
+const SCALE = freeze(/^scale:([^=]+)=((0|(-?[1-9]\d*))(?:\.\d+)?)$/, true);

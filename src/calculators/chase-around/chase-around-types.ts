@@ -128,26 +128,6 @@ export function isSolve(val: unknown): val is Solve {
 }
 
 /**
- * Type guard for {@link WpdProjectJson}.
- *
- * @param val the value.
- */
-export function isWpdProjectJson(val: unknown): val is WpdProjectJson {
-    return _.isObject(val)
-        && "datasetColl" in val
-        && "version" in val
-        && _.isArray(val.version)
-        && 4 === val.version[0]
-        && 2 === val.version[1]
-        && _.isArray(val.datasetColl)
-        && -1 === val.datasetColl.findIndex(next => !(
-            _.isObject(next)
-            && "data" in next
-            && _.isArray(next.data)
-        ));
-}
-
-/**
  * Chase a guide or scale until its end or until its intersection with another guide or scale.
  */
 export interface Chase {

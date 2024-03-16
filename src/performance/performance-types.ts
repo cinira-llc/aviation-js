@@ -16,6 +16,7 @@ export type PerformanceVariable =
     | Arm
     | CenterOfGravity
     | ClimbRate
+    | Fuel
     | Power
     | Weight;
 
@@ -74,6 +75,15 @@ export function isClimbRate(val: unknown): val is ClimbRate {
 }
 
 /**
+ * Type guard for {@link Fuel}.
+ *
+ * @param val the value.
+ */
+export function isFuel(val: unknown): val is Fuel {
+    return isPerformanceVariableOf(val, FUEL, FUEL_UNIT);
+}
+
+/**
  * Type guard for {@link Power}.
  *
  * @param val the value.
@@ -126,10 +136,23 @@ interface CenterOfGravity {
  * Airspeed variable.
  */
 interface ClimbRate {
-    variable: "climbRate",
+    variable: "climbRate";
     unit:
         | "feet per minute"
         | "meters per second";
+}
+
+/**
+ * Fuel variable.
+ */
+interface Fuel {
+    variable: "fuel";
+    unit:
+        | "gallons"
+        | "liters"
+        | "pounds 100ll"
+        | "pounds g100ul"
+        | "pounds jet a-1";
 }
 
 /**
@@ -209,6 +232,22 @@ const CLIMB_RATE = freeze<ClimbRate["variable"][]>(["climbRate"]);
  * Climb rate units.
  */
 const CLIMB_RATE_UNIT = freeze<ClimbRate["unit"][]>(["feet per minute", "meters per second"]);
+
+/**
+ * Fuel variables.
+ */
+const FUEL = freeze<Fuel["variable"][]>(["fuel"]);
+
+/**
+ * Fuel units.
+ */
+const FUEL_UNIT = freeze<Fuel["unit"][]>([
+    "gallons",
+    "liters",
+    "pounds 100ll",
+    "pounds g100ul",
+    "pounds jet a-1"
+]);
 
 /**
  * Power variables.

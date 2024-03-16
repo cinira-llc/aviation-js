@@ -16,6 +16,12 @@ describe("conversion-utils.ts", () => {
         it("converts feet to meters", () => {
             expect(convertUnits(1_000, "feet", "meters")).toBeCloseTo(304.8, 1);
         });
+        it("converts gallons to liters", () => {
+            expect(convertUnits(1_000, "gallons", "liters")).toBeCloseTo(3785.4, 1);
+        });
+        it("converts liters to gallons", () => {
+            expect(convertUnits(1_000, "liters", "gallons")).toBeCloseTo(264.2, 1);
+        });
         it("converts meters to feet", () => {
             expect(convertUnits(15, "meters", "feet")).toBeCloseTo(49.2, 1);
         });

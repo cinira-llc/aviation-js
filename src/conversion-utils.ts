@@ -61,6 +61,7 @@ const UNIT_CONVERSIONS = freeze<UnitConversions>({
     "degrees celsius:degrees fahrenheit": [9 / 5, 32],
     "feet:meters": [0.3048],
     "feet per minute:meters per second": [0.3048],
+    "gallons:liters": [3.785412],
     "inches aft of datum:meters aft of datum": [0.3048],
     "pounds:kilograms": [0.453592],
 }, true);

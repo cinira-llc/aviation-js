@@ -13,6 +13,7 @@ export type PerformanceUnit = PerformanceVariable["unit"];
  */
 export type PerformanceVariable =
     | Airspeed
+    | Arm
     | CenterOfGravity
     | ClimbRate
     | Power
@@ -108,7 +109,9 @@ interface Airspeed {
  */
 interface Arm {
     variable: "arm";
-    unit: "inches aft of datum";
+    unit:
+        | "inches aft of datum"
+        | "meters aft of datum";
 }
 
 /**

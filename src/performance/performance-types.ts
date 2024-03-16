@@ -1,7 +1,7 @@
-import { freeze } from "immer";
+import {freeze} from "immer";
 import _ from "lodash";
 
-import type { AnyUnit } from "../aviation-types";
+import type {AnyUnit} from "../aviation-types";
 
 /**
  * All performance-related units.
@@ -27,12 +27,31 @@ export interface UnitRange {
 }
 
 /**
+ * Arm unit.
+ */
+export type ArmUnit = Arm["unit"];
+
+/**
+ * Weight unit.
+ */
+export type WeightUnit = Weight["unit"];
+
+/**
  * Type guard for {@link Airspeed}.
  *
  * @param val the value.
  */
 export function isAirspeed(val: unknown): val is Airspeed {
     return isPerformanceVariableOf(val, AIRSPEED, AIRSPEED_UNIT);
+}
+
+/**
+ * Type guard for {@link Arm}.
+ *
+ * @param val the value.
+ */
+export function isArm(val: unknown): val is Arm {
+    return isPerformanceVariableOf(val, ARM, ARM_UNIT);
 }
 
 /**
@@ -82,6 +101,14 @@ interface Airspeed {
     unit:
         | "knots"
         | "miles per hour";
+}
+
+/**
+ * Arm.
+ */
+interface Arm {
+    variable: "arm";
+    unit: "inches aft of datum";
 }
 
 /**
@@ -149,6 +176,16 @@ const AIRSPEED = freeze<Airspeed["variable"][]>(["calibratedAirspeed", "indicate
  * Airspeed units.
  */
 const AIRSPEED_UNIT = freeze<Airspeed["unit"][]>(["knots", "miles per hour"]);
+
+/**
+ * Arm variables.
+ */
+const ARM = freeze<Arm["variable"][]>(["arm"]);
+
+/**
+ * Arm units.
+ */
+const ARM_UNIT = freeze<Arm["unit"][]>(["inches aft of datum"]);
 
 /**
  * Center of gravity variables.

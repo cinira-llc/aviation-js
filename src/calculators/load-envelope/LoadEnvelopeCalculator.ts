@@ -68,8 +68,8 @@ export class LoadEnvelopeCalculator implements Calculator {
      */
     static create(def: LoadEnvelopeCalcJson, proj: WpdProjectJson) {
         const project = WpdProject.create(proj);
-        const scales = _.transform(_.entries(def.scales), (scales, [name, scale]) => {
-            scales[name] = project.scale(name, scale.variable || name, scale.unit, scale.flow);
+        const scales = _.transform(_.entries(def.scales), (scales, [scale, {flow, unit, variable}]) => {
+            scales[scale] = project.scale(scale, variable || scale, unit, flow);
         }, {} as Dictionary<Scale>);
         const areas = _.transform(def.areas, (areas, area) => {
             const name = area.area;
@@ -82,6 +82,7 @@ export class LoadEnvelopeCalculator implements Calculator {
             (inputs, {range, unit, variable}) => {
                 inputs[variable] = {range, unit};
             }, {} as Dictionary<UnitRange>);
+        console.dir(inputs);
         return freeze(new LoadEnvelopeCalculator(scales, areas, inputs), true);
     }
 }

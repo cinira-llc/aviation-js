@@ -82,7 +82,6 @@ export class LoadEnvelopeCalculator implements Calculator {
             (inputs, {range, unit, variable}) => {
                 inputs[variable] = {range, unit};
             }, {} as Dictionary<UnitRange>);
-        console.dir(inputs);
         return freeze(new LoadEnvelopeCalculator(scales, areas, inputs), true);
     }
 }

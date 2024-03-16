@@ -17,6 +17,7 @@ export type PerformanceVariable =
     | CenterOfGravity
     | ClimbRate
     | Fuel
+    | Moment
     | Power
     | Weight;
 
@@ -81,6 +82,15 @@ export function isClimbRate(val: unknown): val is ClimbRate {
  */
 export function isFuel(val: unknown): val is Fuel {
     return isPerformanceVariableOf(val, FUEL, FUEL_UNIT);
+}
+
+/**
+ * Type guard for {@link Moment}.
+ *
+ * @param val the value.
+ */
+export function isMoment(val: unknown): val is Moment {
+    return isPerformanceVariableOf(val, MOMENT, MOMENT_UNIT);
 }
 
 /**
@@ -153,6 +163,16 @@ interface Fuel {
         | "pounds 100ll"
         | "pounds g100ul"
         | "pounds jet a-1";
+}
+
+/**
+ * Moment variable.
+ */
+interface Moment {
+    variable: "moment";
+    unit:
+        | "inch pounds"
+        | "kilogram meters";
 }
 
 /**
@@ -248,6 +268,16 @@ const FUEL_UNIT = freeze<Fuel["unit"][]>([
     "pounds g100ul",
     "pounds jet a-1"
 ]);
+
+/**
+ * Moment variables.
+ */
+const MOMENT = freeze<Moment["variable"][]>(["moment"]);
+
+/**
+ * Moment variables.
+ */
+const MOMENT_UNIT = freeze<Moment["unit"][]>(["inch pounds", "kilogram meters"]);
 
 /**
  * Power variables.

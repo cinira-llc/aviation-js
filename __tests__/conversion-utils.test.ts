@@ -1,5 +1,5 @@
-import { convertUnits } from "../src";
-import { indicatedToPressureAltitude } from "../src/conversion-utils";
+import {convertUnits} from "../src";
+import {indicatedToPressureAltitude} from "../src/conversion-utils";
 
 describe("conversion-utils.ts", () => {
     describe("convertUnits()", () => {
@@ -18,6 +18,12 @@ describe("conversion-utils.ts", () => {
         });
         it("converts gallons to liters", () => {
             expect(convertUnits(1_000, "gallons", "liters")).toBeCloseTo(3785.4, 1);
+        });
+        it("converts inch-pounds to kilogram-meters", () => {
+            expect(convertUnits(10_000, "inch pounds", "kilogram meters")).toBeCloseTo(115.2, 1);
+        });
+        it("converts kilogram-meters to inch-pounds", () => {
+            expect(convertUnits(400, "kilogram meters", "inch pounds")).toBeCloseTo(34_719.2, 1);
         });
         it("converts liters to gallons", () => {
             expect(convertUnits(1_000, "liters", "gallons")).toBeCloseTo(264.2, 1);

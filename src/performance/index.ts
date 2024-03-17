@@ -1,4 +1,12 @@
-import {isAirspeed, isCenterOfGravity, isClimbRate, isPower, isWeight} from "./performance-types";
+import {
+    isAirspeed,
+    isArmUnit,
+    isCenterOfGravity,
+    isClimbRate,
+    isPower,
+    isWeight,
+    isWeightUnit
+} from "./performance-types";
 
 import type {ArmUnit, PerformanceUnit, PerformanceVariable, WeightUnit} from "./performance-types";
 
@@ -9,8 +17,10 @@ export {
     PerformanceVariable,
     WeightUnit,
     isAirspeed,
+    isArmUnit,
     isCenterOfGravity,
     isClimbRate,
     isPower,
     isWeight,
+    isWeightUnit
 };

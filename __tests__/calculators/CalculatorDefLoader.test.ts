@@ -8,6 +8,8 @@ import cruiseAirspeedJson from "./chase-around/cruise-airspeed.json";
 import cruiseAirspeedProjJson from "./chase-around/cruise-airspeed.wpd.json";
 import centerOfGravityRangeJson from "./load-envelope/center-of-gravity-range.json";
 import centerOfGravityRangeProjJson from "./load-envelope/center-of-gravity-range.wpd.json";
+import momentArmsJson from "./load-moment/moment-arms.json";
+import {LoadMomentCalculator} from "../../src/calculators/load-moment";
 
 describe("CalculatorDefLoader", () => {
     describe("load()", () => {
@@ -38,6 +40,16 @@ describe("CalculatorDefLoader", () => {
                 expect(result.solution.category).toBe("normal");
             }
         });
+        it("loads the moment-arms calculator", async () => {
+            const def = await instance.load(new URL("http://localhost/moment-arms.json"));
+            const calc = createCalculator(def);
+            expect(calc).toBeInstanceOf(LoadMomentCalculator);
+            const result = calc.calculate({});
+            expect(result.outputs).toStrictEqual({
+                centerOfGravity: 0,
+                weight: 0
+            });
+        })
     });
 });
 
@@ -52,6 +64,8 @@ async function fetchTestJson<T>(src: string | URL): Promise<T> {
             return Promise.resolve(cruiseAirspeedJson as T);
         case "http://localhost/cruise-airspeed.wpd.json":
             return Promise.resolve(cruiseAirspeedProjJson as T);
+        case "http://localhost/moment-arms.json":
+            return Promise.resolve(momentArmsJson as T);
         default:
             throw Error("Unsupported URL.");
     }

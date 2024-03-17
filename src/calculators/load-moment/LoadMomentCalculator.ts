@@ -13,7 +13,7 @@ export class LoadMomentCalculator implements Calculator {
         private readonly armUnit: ArmUnit,
         private readonly weightUnit: WeightUnit,
         private readonly arms: Dictionary<number>) {
-        this.inputs = _.mapValues(arms, () => ({unit: armUnit}));
+        this.inputs = _.mapValues(arms, () => ({unit: weightUnit}));
         this.outputs = {
             centerOfGravity: {
                 unit: armUnit

@@ -1,6 +1,6 @@
 import momentArmsJson from "./moment-arms.json";
-import {isLoadArmsJson} from "../../../src/calculators/load-moment/load-moment-types";
-import {LoadMomentCalculator} from "../../../src/calculators/load-moment/LoadMomentCalculator";
+import {isLoadArmsJson} from "../../../src/calculators/load-moment";
+import {LoadMomentCalculator} from "../../../src/calculators/load-moment";
 
 describe("LoadMomentCalculator", () => {
     describe("for load-arms definitions", () => {
@@ -9,6 +9,36 @@ describe("LoadMomentCalculator", () => {
             throw Error();
         }
         const calc = LoadMomentCalculator.create(momentArmsJson);
+        describe("create()", () => {
+            it("returns correct inputs", () => {
+                expect(calc.inputs).toStrictEqual({
+                    aftExtendedBaggage: {
+                        unit: "kilograms",
+                    },
+                    baggageTube: {
+                        unit: "kilograms",
+                    },
+                    forwardExtendedBaggage: {
+                        unit: "kilograms",
+                    },
+                    frontSeats: {
+                        unit: "kilograms",
+                    },
+                    fuel: {
+                        unit: "kilograms",
+                    },
+                    oil: {
+                        unit: "kilograms",
+                    },
+                    rearSeats: {
+                        unit: "kilograms",
+                    },
+                    standardBaggage: {
+                        unit: "kilograms",
+                    }
+                });
+            });
+        });
         describe("calculate()", () => {
             it("assumes zero for missing stations", () => {
                 expect(calc.calculate({})).toStrictEqual({

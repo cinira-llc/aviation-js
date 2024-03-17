@@ -17,14 +17,6 @@
   },
   "areas":[
     {
-      "area": "standardTankGrossWeightIncrease",
-      "withinLimits": false
-    },
-    {
-      "area": "standardTankOnly",
-      "withinLimits": false
-    },
-    {
       "area": "grossWeightIncreaseOnly",
       "withinLimits": true,
       "category": "normal"
@@ -35,9 +27,17 @@
       "category": "utility"
     },
     {
-      "area": "envelope",
+      "area": "normal",
       "withinLimits": true,
       "category": "normal"
+    },
+    {
+      "area": "standardTankGrossWeightIncrease",
+      "withinLimits": false
+    },
+    {
+      "area": "standardTankOnly",
+      "withinLimits": false
     }
   ]
 }

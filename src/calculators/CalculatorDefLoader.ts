@@ -6,6 +6,7 @@ import {isWpdProjectJson} from "../web-plot-digitizer/web-plot-digitizer-types";
 
 import type {CalculatorDef} from ".";
 import {isLoadEnvelopeCalcJson} from "./load-envelope/load-envelope-types";
+import {isLoadArmsJson} from "./load-moment/load-moment-types";
 
 /**
  * {@link CalculatorDefLoader} encapsulates the process of loading a performance calculator definition from a URL.
@@ -33,6 +34,11 @@ export class CalculatorDefLoader {
                 kind: "load envelope",
                 definition: def,
                 project: await loader(new URL(def.project.src, src), isWpdProjectJson)
+            }, true);
+        } else if (isLoadArmsJson(def)) {
+            return freeze({
+                kind: "load moment",
+                definition: def
             }, true);
         }
         throw Error("Unsupported chart or calculator type.");

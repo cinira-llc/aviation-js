@@ -18,6 +18,7 @@ export type PerformanceVariable =
     | ClimbRate
     | Fuel
     | Moment
+    | Oil
     | Power
     | Weight;
 
@@ -58,6 +59,15 @@ export function isArm(val: unknown): val is Arm {
 }
 
 /**
+ * Type guard for {@link ArmUnit}.
+ *
+ * @param val
+ */
+export function isArmUnit(val: unknown): val is ArmUnit {
+    return _.isString(val) && ARM_UNIT.includes(val);
+}
+
+/**
  * Type guard for {@link CenterOfGravity}.
  *
  * @param val the value.
@@ -94,6 +104,15 @@ export function isMoment(val: unknown): val is Moment {
 }
 
 /**
+ * Type guard for {@link Oil}.
+ *
+ * @param val the value.
+ */
+export function isOil(val: unknown): val is Oil {
+    return isPerformanceVariableOf(val, OIL, OIL_UNIT);
+}
+
+/**
  * Type guard for {@link Power}.
  *
  * @param val the value.
@@ -109,6 +128,15 @@ export function isPower(val: unknown): val is Power {
  */
 export function isWeight(val: unknown): val is Weight {
     return isPerformanceVariableOf(val, WEIGHT, WEIGHT_UNIT);
+}
+
+/**
+ * Type guard for {@link WeightUnit}.
+ *
+ * @param val
+ */
+export function isWeightUnit(val: unknown): val is WeightUnit {
+    return _.isString(val) && WEIGHT_UNIT.includes(val);
 }
 
 /**
@@ -176,6 +204,17 @@ interface Moment {
 }
 
 /**
+ * Oil variable.
+ */
+interface Oil {
+    variable: "oil";
+    unit:
+        | "grams"
+        | "pounds"
+        | "quarts";
+}
+
+/**
  * Airspeed variable.
  */
 interface Power {
@@ -221,7 +260,7 @@ const AIRSPEED = freeze<Airspeed["variable"][]>(["calibratedAirspeed", "indicate
 /**
  * Airspeed units.
  */
-const AIRSPEED_UNIT = freeze<Airspeed["unit"][]>(["knots", "miles per hour"]);
+const AIRSPEED_UNIT: string[] = freeze<Airspeed["unit"][]>(["knots", "miles per hour"]);
 
 /**
  * Arm variables.
@@ -231,7 +270,7 @@ const ARM = freeze<Arm["variable"][]>(["arm"]);
 /**
  * Arm units.
  */
-const ARM_UNIT = freeze<Arm["unit"][]>(["inches aft of datum"]);
+const ARM_UNIT: string[] = freeze<Arm["unit"][]>(["inches aft of datum", "meters aft of datum"]);
 
 /**
  * Center of gravity variables.
@@ -241,7 +280,7 @@ const CENTER_OF_GRAVITY = freeze<CenterOfGravity["variable"][]>(["centerOfGravit
 /**
  * Center of gravity units.
  */
-const CENTER_OF_GRAVITY_UNIT = freeze<CenterOfGravity["unit"][]>(["inches aft of datum"]);
+const CENTER_OF_GRAVITY_UNIT: string[] = freeze<CenterOfGravity["unit"][]>(["inches aft of datum"]);
 
 /**
  * Climb rate variables.
@@ -251,7 +290,7 @@ const CLIMB_RATE = freeze<ClimbRate["variable"][]>(["climbRate"]);
 /**
  * Climb rate units.
  */
-const CLIMB_RATE_UNIT = freeze<ClimbRate["unit"][]>(["feet per minute", "meters per second"]);
+const CLIMB_RATE_UNIT: string[] = freeze<ClimbRate["unit"][]>(["feet per minute", "meters per second"]);
 
 /**
  * Fuel variables.
@@ -261,7 +300,7 @@ const FUEL = freeze<Fuel["variable"][]>(["fuel"]);
 /**
  * Fuel units.
  */
-const FUEL_UNIT = freeze<Fuel["unit"][]>([
+const FUEL_UNIT: string[] = freeze<Fuel["unit"][]>([
     "gallons",
     "liters",
     "pounds 100ll",
@@ -275,9 +314,19 @@ const FUEL_UNIT = freeze<Fuel["unit"][]>([
 const MOMENT = freeze<Moment["variable"][]>(["moment"]);
 
 /**
- * Moment variables.
+ * Moment units.
  */
-const MOMENT_UNIT = freeze<Moment["unit"][]>(["inch pounds", "kilogram meters"]);
+const MOMENT_UNIT: string[] = freeze<Moment["unit"][]>(["inch pounds", "kilogram meters"]);
+
+/**
+ * Oil variables.
+ */
+const OIL = freeze<Oil["variable"][]>(["oil"]);
+
+/**
+ * Oil units.
+ */
+const OIL_UNIT: string[] = freeze<Oil["unit"][]>(["grams", "pounds", "quarts"]);
 
 /**
  * Power variables.
@@ -287,7 +336,7 @@ const POWER = freeze<Power["variable"][]>(["power"]);
 /**
  * Power units.
  */
-const POWER_UNIT = freeze<Power["unit"][]>(["percent"]);
+const POWER_UNIT: string[] = freeze<Power["unit"][]>(["percent"]);
 
 /**
  * Weight variables.
@@ -297,4 +346,4 @@ const WEIGHT = freeze<Weight["variable"][]>(["emptyWeight", "rampWeight", "weigh
 /**
  * Weight units.
  */
-const WEIGHT_UNIT = freeze<Weight["unit"][]>(["kilograms", "pounds"]);
+const WEIGHT_UNIT: string[] = freeze<Weight["unit"][]>(["kilograms", "pounds"]);

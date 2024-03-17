@@ -1,0 +1,18 @@
+{
+  "kind": "load-arms",
+  "version": "1",
+  "units": {
+    "arm": "meters aft of datum",
+    "weight": "kilograms"
+  },
+  "arms": {
+    "aftExtendedBaggage": 4.54,
+    "baggageTube": 4.32,
+    "forwardExtendedBaggage": 3.89,
+    "frontSeats": 2.3,
+    "fuel": 2.63,
+    "oil": 1,
+    "rearSeats": 3.25,
+    "standardBaggage": 3.65
+  }
+}

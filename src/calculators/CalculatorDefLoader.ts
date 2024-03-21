@@ -22,7 +22,7 @@ export class CalculatorDefLoader {
      */
     async load(src: URL): Promise<CalculatorDef> {
         const {loader} = this;
-        const def = await loader(src, isPerformanceCalculatorDef);
+        const def = await loader(src, isPerformanceCalculatorJson);
         if (isChaseAroundCalcJson(def)) {
             return freeze({
                 kind: "chase around",
@@ -54,6 +54,6 @@ export class CalculatorDefLoader {
     }
 }
 
-function isPerformanceCalculatorDef(val: unknown): val is { kind: string } {
+function isPerformanceCalculatorJson(val: unknown): val is { kind: string } {
     return _.isObject(val) && "kind" in val && _.isString(val.kind);
 }

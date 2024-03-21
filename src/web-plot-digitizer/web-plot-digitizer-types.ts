@@ -1,6 +1,6 @@
-import _ from "lodash";
+import _, {Dictionary} from "lodash";
 
-import type { Point } from "@mattj65817/util-js";
+import type {Path, Point} from "@mattj65817/util-js";
 
 /**
  * JSON format of a WebPlotDigitizer project file (the subset of it that we care about.)
@@ -14,6 +14,11 @@ export interface WpdProjectJson {
         }[];
     }[];
 }
+
+export type WpdProjectDef = Dictionary<[
+    value: number,
+    path: Path
+][]>;
 
 /**
  * Type guard for {@link WpdProjectJson}.

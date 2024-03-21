@@ -1,6 +1,9 @@
 {
   "kind": "load-arms",
   "version": "1",
+  "project": {
+    "src": "./moment-arms.wpd.json"
+  },
   "units": {
     "arm": "meters aft of datum",
     "weight": "kilograms"

@@ -22,6 +22,7 @@ describe("HotspotVisualization", () => {
         it("calculates hotspots from the moment-arms visualization", async () => {
             const def = await loader.load(new URL("http://charts.com/moment-arms-hotspot.json"));
             const vis = HotspotVisualization.create(def);
+            expect(vis.variables).toStrictEqual({arm: "meters aft of datum"});
             const hotspot = vis.hotspot({
                 arm: 2.35
             });

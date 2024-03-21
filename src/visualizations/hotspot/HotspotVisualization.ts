@@ -8,9 +8,13 @@ import type {Dictionary} from "lodash";
 import type {HotspotVisualizationDef} from "../visualizations-types";
 import {Direction} from "../../charts";
 import {WpdProjectDef} from "../../web-plot-digitizer/web-plot-digitizer-types";
+import {AnyUnit} from "../../aviation-types";
 
 export class HotspotVisualization {
-    private constructor(private readonly axes: HotspotVisualizationDef["axes"], private readonly project: WpdProject) {
+    private constructor(
+        public readonly variables: Dictionary<AnyUnit>,
+        private readonly axes: HotspotVisualizationDef["axes"],
+        private readonly project: WpdProject) {
     }
 
     /**
@@ -37,7 +41,13 @@ export class HotspotVisualization {
     static create(def: HotspotVisualizationDef) {
         const proj = WpdProject.createFromDef(def.project);
         const axes = _.cloneDeep(def.axes);
-        return freeze(new HotspotVisualization(axes, proj), true);
+        const variables = _.transform(axes, (variables, axis) => {
+            if ("scale" in axis) {
+                const {scale, unit, variable} = axis;
+                variables[variable || scale] = unit;
+            }
+        }, {} as Dictionary<AnyUnit>);
+        return freeze(new HotspotVisualization(variables, axes, proj), true);
     }
 
     static load(def: HotspotVisualizationJson, proj: WpdProjectDef) {

@@ -63,6 +63,7 @@ const UNIT_CONVERSIONS = freeze<UnitConversions>({
     "feet per minute:meters per second": [0.3048],
     "gallons:liters": [3.785412],
     "inch pounds:kilogram meters": [0.011521],
+    "inches:meters": [0.0254],
     "inches aft of datum:meters aft of datum": [0.0254],
     "pounds:kilograms": [0.453592],
 }, true);

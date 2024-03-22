@@ -4,7 +4,9 @@ import _ from "lodash";
 /**
  * All environment-related units.
  */
-export type EnvironmentUnit = EnvironmentVariable["unit"];
+export type EnvironmentUnit =
+    | EnvironmentVariable["unit"]
+    | typeof LENGTH_UNIT[number];
 
 /**
  * Environmental variable and unit.
@@ -89,3 +91,5 @@ const TEMPERATURE = freeze<Temperature["variable"][]>(["outsideAirTemperature"])
  * Temperature units.
  */
 const TEMPERATURE_UNIT = freeze<Temperature["unit"][]>(["degrees celsius", "degrees fahrenheit"]);
+
+const LENGTH_UNIT = freeze(["inches"] as const);

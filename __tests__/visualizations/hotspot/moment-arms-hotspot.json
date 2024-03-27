@@ -1,0 +1,16 @@
+{
+  "kind": "hotspot-visualization",
+  "version": "1",
+  "project": {
+    "src": "./moment-arms.wpd.json"
+  },
+  "axes": [
+    {
+      "scale": "arm",
+      "unit": "meters aft of datum"
+    },
+    {
+      "guide": "axis"
+    }
+  ]
+}

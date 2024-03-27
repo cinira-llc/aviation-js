@@ -1,7 +1,7 @@
-import { freeze } from "immer";
+import {freeze} from "immer";
 import _ from "lodash";
 
-import type { AnyUnit } from "../aviation-types";
+import type {AnyUnit} from "../aviation-types";
 
 /**
  * All performance-related units.
@@ -13,8 +13,12 @@ export type PerformanceUnit = PerformanceVariable["unit"];
  */
 export type PerformanceVariable =
     | Airspeed
+    | Arm
     | CenterOfGravity
     | ClimbRate
+    | Fuel
+    | Moment
+    | Oil
     | Power
     | Weight;
 
@@ -27,12 +31,40 @@ export interface UnitRange {
 }
 
 /**
+ * Arm unit.
+ */
+export type ArmUnit = Arm["unit"];
+
+/**
+ * Weight unit.
+ */
+export type WeightUnit = Weight["unit"];
+
+/**
  * Type guard for {@link Airspeed}.
  *
  * @param val the value.
  */
 export function isAirspeed(val: unknown): val is Airspeed {
     return isPerformanceVariableOf(val, AIRSPEED, AIRSPEED_UNIT);
+}
+
+/**
+ * Type guard for {@link Arm}.
+ *
+ * @param val the value.
+ */
+export function isArm(val: unknown): val is Arm {
+    return isPerformanceVariableOf(val, ARM, ARM_UNIT);
+}
+
+/**
+ * Type guard for {@link ArmUnit}.
+ *
+ * @param val
+ */
+export function isArmUnit(val: unknown): val is ArmUnit {
+    return _.isString(val) && ARM_UNIT.includes(val);
 }
 
 /**
@@ -54,6 +86,33 @@ export function isClimbRate(val: unknown): val is ClimbRate {
 }
 
 /**
+ * Type guard for {@link Fuel}.
+ *
+ * @param val the value.
+ */
+export function isFuel(val: unknown): val is Fuel {
+    return isPerformanceVariableOf(val, FUEL, FUEL_UNIT);
+}
+
+/**
+ * Type guard for {@link Moment}.
+ *
+ * @param val the value.
+ */
+export function isMoment(val: unknown): val is Moment {
+    return isPerformanceVariableOf(val, MOMENT, MOMENT_UNIT);
+}
+
+/**
+ * Type guard for {@link Oil}.
+ *
+ * @param val the value.
+ */
+export function isOil(val: unknown): val is Oil {
+    return isPerformanceVariableOf(val, OIL, OIL_UNIT);
+}
+
+/**
  * Type guard for {@link Power}.
  *
  * @param val the value.
@@ -72,6 +131,15 @@ export function isWeight(val: unknown): val is Weight {
 }
 
 /**
+ * Type guard for {@link WeightUnit}.
+ *
+ * @param val
+ */
+export function isWeightUnit(val: unknown): val is WeightUnit {
+    return _.isString(val) && WEIGHT_UNIT.includes(val);
+}
+
+/**
  * Indicated airspeed.
  */
 interface Airspeed {
@@ -82,6 +150,16 @@ interface Airspeed {
     unit:
         | "knots"
         | "miles per hour";
+}
+
+/**
+ * Arm.
+ */
+interface Arm {
+    variable: "arm";
+    unit:
+        | "inches aft of datum"
+        | "meters aft of datum";
 }
 
 /**
@@ -96,10 +174,44 @@ interface CenterOfGravity {
  * Airspeed variable.
  */
 interface ClimbRate {
-    variable: "climbRate",
+    variable: "climbRate";
     unit:
         | "feet per minute"
         | "meters per second";
+}
+
+/**
+ * Fuel variable.
+ */
+interface Fuel {
+    variable: "fuel";
+    unit:
+        | "gallons"
+        | "liters"
+        | "pounds 100ll"
+        | "pounds g100ul"
+        | "pounds jet a-1";
+}
+
+/**
+ * Moment variable.
+ */
+interface Moment {
+    variable: "moment";
+    unit:
+        | "inch pounds"
+        | "kilogram meters";
+}
+
+/**
+ * Oil variable.
+ */
+interface Oil {
+    variable: "oil";
+    unit:
+        | "grams"
+        | "pounds"
+        | "quarts";
 }
 
 /**
@@ -148,7 +260,17 @@ const AIRSPEED = freeze<Airspeed["variable"][]>(["calibratedAirspeed", "indicate
 /**
  * Airspeed units.
  */
-const AIRSPEED_UNIT = freeze<Airspeed["unit"][]>(["knots", "miles per hour"]);
+const AIRSPEED_UNIT: string[] = freeze<Airspeed["unit"][]>(["knots", "miles per hour"]);
+
+/**
+ * Arm variables.
+ */
+const ARM = freeze<Arm["variable"][]>(["arm"]);
+
+/**
+ * Arm units.
+ */
+const ARM_UNIT: string[] = freeze<Arm["unit"][]>(["inches aft of datum", "meters aft of datum"]);
 
 /**
  * Center of gravity variables.
@@ -158,7 +280,7 @@ const CENTER_OF_GRAVITY = freeze<CenterOfGravity["variable"][]>(["centerOfGravit
 /**
  * Center of gravity units.
  */
-const CENTER_OF_GRAVITY_UNIT = freeze<CenterOfGravity["unit"][]>(["inches aft of datum"]);
+const CENTER_OF_GRAVITY_UNIT: string[] = freeze<CenterOfGravity["unit"][]>(["inches aft of datum"]);
 
 /**
  * Climb rate variables.
@@ -168,7 +290,43 @@ const CLIMB_RATE = freeze<ClimbRate["variable"][]>(["climbRate"]);
 /**
  * Climb rate units.
  */
-const CLIMB_RATE_UNIT = freeze<ClimbRate["unit"][]>(["feet per minute", "meters per second"]);
+const CLIMB_RATE_UNIT: string[] = freeze<ClimbRate["unit"][]>(["feet per minute", "meters per second"]);
+
+/**
+ * Fuel variables.
+ */
+const FUEL = freeze<Fuel["variable"][]>(["fuel"]);
+
+/**
+ * Fuel units.
+ */
+const FUEL_UNIT: string[] = freeze<Fuel["unit"][]>([
+    "gallons",
+    "liters",
+    "pounds 100ll",
+    "pounds g100ul",
+    "pounds jet a-1"
+]);
+
+/**
+ * Moment variables.
+ */
+const MOMENT = freeze<Moment["variable"][]>(["moment"]);
+
+/**
+ * Moment units.
+ */
+const MOMENT_UNIT: string[] = freeze<Moment["unit"][]>(["inch pounds", "kilogram meters"]);
+
+/**
+ * Oil variables.
+ */
+const OIL = freeze<Oil["variable"][]>(["oil"]);
+
+/**
+ * Oil units.
+ */
+const OIL_UNIT: string[] = freeze<Oil["unit"][]>(["grams", "pounds", "quarts"]);
 
 /**
  * Power variables.
@@ -178,7 +336,7 @@ const POWER = freeze<Power["variable"][]>(["power"]);
 /**
  * Power units.
  */
-const POWER_UNIT = freeze<Power["unit"][]>(["percent"]);
+const POWER_UNIT: string[] = freeze<Power["unit"][]>(["percent"]);
 
 /**
  * Weight variables.
@@ -188,4 +346,4 @@ const WEIGHT = freeze<Weight["variable"][]>(["emptyWeight", "rampWeight", "weigh
 /**
  * Weight units.
  */
-const WEIGHT_UNIT = freeze<Weight["unit"][]>(["kilograms", "pounds"]);
+const WEIGHT_UNIT: string[] = freeze<Weight["unit"][]>(["kilograms", "pounds"]);

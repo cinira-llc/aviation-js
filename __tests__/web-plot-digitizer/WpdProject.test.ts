@@ -1,6 +1,6 @@
-import { Contour, Guide, Scale } from "../../src/charts";
-import { isWpdProjectJson } from "../../src/web-plot-digitizer/web-plot-digitizer-types";
-import { WpdProject } from "../../src/web-plot-digitizer";
+import {Contour, Guide, Scale} from "../../src/charts";
+import {isWpdProjectJson} from "../../src/web-plot-digitizer/web-plot-digitizer-types";
+import {WpdProject} from "../../src/web-plot-digitizer";
 
 import landingDistanceProjJson from "./landing-distance.wpd.json";
 import centerOfGravityRangeProjJson from "./center-of-gravity-range.wpd.json";
@@ -20,7 +20,7 @@ describe("WpdProject", () => {
                     "utility",
                 ]);
                 expect(proj.guideNames).toStrictEqual([]);
-                expect(proj.scaleNames).toStrictEqual(["weight"]);
+                expect(proj.scaleNames).toStrictEqual(["centerOfGravity", "weight"]);
                 expect(proj.area("envelope")).toStrictEqual([
                     [516.5526139410188, 488.5150804289545],
                     [92.4849195710469, 488.51508042895443],
@@ -57,6 +57,14 @@ describe("WpdProject", () => {
                     [428.5459115281501, 300.62466487935654],
                     [428.5459115281502, 488.5150804289544],
                 ]);
+                expect(proj.scale("centerOfGravity", "centerOfGravity", "kilogram meters", "up"))
+                    .toStrictEqual(Scale.createScale("centerOfGravity", "centerOfGravity", "kilogram meters", [
+                        [2.4, Contour.create([[92.4849, 530.3767], [92.4849, 53.5439]], "up")],
+                        [2.45, Contour.create([[205.4139, 530.3767], [205.4139, 53.5439]], "up")],
+                        [2.5, Contour.create([[316.5905, 530.3767], [316.5905, 53.5439]], "up")],
+                        [2.55, Contour.create([[428.5459, 530.3767], [428.5459, 53.5439]], "up")],
+                        [2.6, Contour.create([[540.5013, 530.3767], [540.5013, 53.5439]], "up")]
+                    ], "up"));
                 expect(proj.scale("weight", "weight", "kilograms", "right"))
                     .toStrictEqual(Scale.createScale("weight", "weight", "kilograms", [
                         [750, Contour.create([

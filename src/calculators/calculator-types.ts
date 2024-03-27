@@ -1,8 +1,10 @@
 import _ from "lodash";
 
-import type { Dictionary } from "lodash";
-import type { AnyUnit } from "../aviation-types";
-import { ChaseAroundCalcJson, WpdProjectJson } from "./chase-around/chase-around-types";
+import type {Dictionary} from "lodash";
+import type {AnyUnit} from "../aviation-types";
+import {ChaseAroundCalcJson, WpdProjectJson} from "./chase-around/chase-around-types";
+import {LoadEnvelopeCalcJson} from "./load-envelope/load-envelope-types";
+import {LoadArmsJson} from "./load-moment/load-moment-types";
 
 /**
  * Public interface to an object which calculates one or more performance variables.
@@ -58,10 +60,29 @@ interface ChaseAroundCalcDef {
 }
 
 /**
+ * Definition for a load envelope calculator.
+ */
+interface LoadEnvelopeCalcDef {
+    kind: "load envelope";
+    definition: LoadEnvelopeCalcJson;
+    project: WpdProjectJson;
+}
+
+/**
+ * Definition for a load moment calculator.
+ */
+interface LoadMomentCalcDef {
+    kind: "load moment";
+    definition: LoadArmsJson;
+}
+
+/**
  * Definitions for all supported calculator types.
  */
 export type CalculatorDef =
-    | ChaseAroundCalcDef;
+    | ChaseAroundCalcDef
+    | LoadEnvelopeCalcDef
+    | LoadMomentCalcDef;
 
 /**
  * Type guard for {@link Calculation}.

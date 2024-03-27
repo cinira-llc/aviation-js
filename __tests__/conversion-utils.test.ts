@@ -1,5 +1,5 @@
-import { convertUnits } from "../src";
-import { indicatedToPressureAltitude } from "../src/conversion-utils";
+import {convertUnits} from "../src";
+import {indicatedToPressureAltitude} from "../src/conversion-utils";
 
 describe("conversion-utils.ts", () => {
     describe("convertUnits()", () => {
@@ -15,6 +15,24 @@ describe("conversion-utils.ts", () => {
         });
         it("converts feet to meters", () => {
             expect(convertUnits(1_000, "feet", "meters")).toBeCloseTo(304.8, 1);
+        });
+        it("converts gallons to liters", () => {
+            expect(convertUnits(1_000, "gallons", "liters")).toBeCloseTo(3785.4, 1);
+        });
+        it("converts inch-pounds to kilogram-meters", () => {
+            expect(convertUnits(10_000, "inch pounds", "kilogram meters")).toBeCloseTo(115.2, 1);
+        });
+        it("converts inches aft of datum to meters aft of datum", () => {
+            expect(convertUnits(98.5, "inches aft of datum", "meters aft of datum")).toBeCloseTo(2.5, 1);
+        });
+        it("converts kilogram-meters to inch-pounds", () => {
+            expect(convertUnits(400, "kilogram meters", "inch pounds")).toBeCloseTo(34_719.2, 1);
+        });
+        it("converts liters to gallons", () => {
+            expect(convertUnits(1_000, "liters", "gallons")).toBeCloseTo(264.2, 1);
+        });
+        it("converts meters aft of datum to inches aft of datum", () => {
+            expect(convertUnits(2.55, "meters aft of datum", "inches aft of datum")).toBeCloseTo(100.4, 1);
         });
         it("converts meters to feet", () => {
             expect(convertUnits(15, "meters", "feet")).toBeCloseTo(49.2, 1);

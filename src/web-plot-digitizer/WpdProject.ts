@@ -1,12 +1,12 @@
-import { freeze } from "immer";
+import {freeze} from "immer";
 import _ from "lodash";
-import { cartesianToPolar, polarToCartesian } from "@mattj65817/util-js";
-import { Contour, Guide, Scale } from "../charts";
+import {cartesianToPolar, polarToCartesian} from "@mattj65817/util-js";
+import {Contour, Guide, Scale} from "../charts";
 
-import type { Path, Point } from "@mattj65817/util-js";
-import type { WpdProjectJson } from "./web-plot-digitizer-types";
-import type { AnyUnit } from "../aviation-types";
-import type { Direction } from "../charts";
+import type {Path, Point} from "@mattj65817/util-js";
+import type {WpdProjectDef, WpdProjectJson} from "./web-plot-digitizer-types";
+import type {AnyUnit} from "../aviation-types";
+import type {Direction} from "../charts";
 
 /**
  * {@link WpdProject} holds the parsed contents of a WebPlotDigitizer project file and encapsulates the process of
@@ -84,7 +84,7 @@ export class WpdProject {
      * @private
      */
     private dataset(name: string) {
-        const { datasets: { [name]: dataset } } = this;
+        const {datasets: {[name]: dataset}} = this;
         if (null == dataset) {
             throw Error(`Dataset not found in project file: ${name}`);
         }
@@ -111,7 +111,7 @@ export class WpdProject {
      */
     static create(proj: WpdProjectJson) {
         const datasets = _.transform(proj.datasetColl,
-            (datasets, { name, data }) => {
+            (datasets, {name, data}) => {
                 const areaMatch = AREA.exec(name);
                 if (null != areaMatch) {
                     const [, area] = areaMatch;
@@ -138,6 +138,41 @@ export class WpdProject {
         _.values(datasets).forEach(next => next.sort(([v0], [v1]) => v0 - v1));
         return freeze(new WpdProject(datasets), true);
     }
+
+    static createFromDef(def: WpdProjectDef) {
+        const cloned = _.cloneDeep(def);
+        _.values(cloned).forEach(next => next.sort(([v0], [v1]) => v0 - v1));
+        return freeze(new WpdProject(cloned), true);
+    }
+
+    static load(json: WpdProjectJson) {
+        const {datasetColl} = json;
+        return freeze(_.transform(datasetColl,
+            (datasets, {name, data}) => {
+                const areaMatch = AREA.exec(name);
+                if (null != areaMatch) {
+                    const [, area] = areaMatch;
+                    const name = `area:${area}`;
+                    (datasets[name] = datasets[name] || []).push([0, _.map(data, "value")]);
+                } else {
+                    const guideMatch = GUIDE.exec(name);
+                    if (null != guideMatch) {
+                        const [, guide, orderString] = guideMatch;
+                        const order = parseFloat(orderString);
+                        const name = `guide:${guide}`;
+                        (datasets[name] = datasets[name] || []).push([order, _.map(data, "value")]);
+                    } else {
+                        const scaleMatch = SCALE.exec(name);
+                        if (null != scaleMatch) {
+                            const [, scale, valueString] = scaleMatch;
+                            const value = parseFloat(valueString);
+                            const name = `scale:${scale}`;
+                            (datasets[name] = datasets[name] || []).push([value, _.map(data, "value")]);
+                        }
+                    }
+                }
+            }, {} as WpdProjectDef), true);
+    }
 }
 
 /**
@@ -159,4 +194,4 @@ const GUIDE = freeze(/^guide:([^=]+)@(0|(-?[1-9]\d*))$/, true);
  *
  * @private
  */
-const SCALE = freeze(/^scale:([^=]+)=(0|(-?[1-9]\d*))$/, true);
+const SCALE = freeze(/^scale:([^=]+)=((0|(-?[1-9]\d*))(?:\.\d+)?)$/, true);

@@ -14,6 +14,7 @@ export type PerformanceUnit = PerformanceVariable["unit"];
 export type PerformanceVariable =
     | Airspeed
     | Arm
+    | BankAngle
     | CenterOfGravity
     | ClimbRate
     | Fuel
@@ -65,6 +66,15 @@ export function isArm(val: unknown): val is Arm {
  */
 export function isArmUnit(val: unknown): val is ArmUnit {
     return _.isString(val) && ARM_UNIT.includes(val);
+}
+
+/**
+ * Type guard for {@link BankAngle}.
+ *
+ * @param val the value.
+ */
+export function isBankAngle(val: unknown): val is BankAngle {
+    return isPerformanceVariableOf(val, BANK_ANGLE, BANK_ANGLE_UNIT);
 }
 
 /**
@@ -160,6 +170,14 @@ interface Arm {
     unit:
         | "inches aft of datum"
         | "meters aft of datum";
+}
+
+/**
+ * Bank angle.
+ */
+interface BankAngle {
+    variable: "bankAngle";
+    unit: "degrees";
 }
 
 /**
@@ -261,6 +279,16 @@ const AIRSPEED = freeze<Airspeed["variable"][]>(["calibratedAirspeed", "indicate
  * Airspeed units.
  */
 const AIRSPEED_UNIT: string[] = freeze<Airspeed["unit"][]>(["knots", "miles per hour"]);
+
+/**
+ * Bank angle variables.
+ */
+const BANK_ANGLE = freeze<BankAngle["variable"][]>(["bankAngle"]);
+
+/**
+ * Bank angle units.
+ */
+const BANK_ANGLE_UNIT: string[] = freeze<BankAngle["unit"][]>(["degrees"]);
 
 /**
  * Arm variables.

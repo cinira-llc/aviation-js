@@ -1,5 +1,5 @@
 import {Direction} from ".";
-import {Path, Point, sortedPath} from "@mattj65817/util-js";
+import {Path, Point, sortedPath} from "@cinira-llc/util-js";
 import {freeze} from "immer";
 
 /**

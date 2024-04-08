@@ -1,7 +1,7 @@
 import _ from "lodash";
-import { isPoint } from "@mattj65817/util-js";
+import { isPoint } from "@cinira-llc/util-js";
 
-import type { Dimensions } from "@mattj65817/util-js";
+import type { Dimensions } from "@cinira-llc/util-js";
 
 /**
  * Metadata describing a performance chart and the location(s) from which it was loaded.

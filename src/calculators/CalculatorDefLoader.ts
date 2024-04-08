@@ -1,6 +1,6 @@
 import {freeze} from "immer";
 import _ from "lodash";
-import {fetchJson, GuardedJsonLoader} from "@mattj65817/util-js";
+import {fetchJson, GuardedJsonLoader} from "@cinira-llc/util-js";
 import {isChaseAroundCalcJson} from "./chase-around/chase-around-types";
 import {isWpdProjectJson} from "../web-plot-digitizer/web-plot-digitizer-types";
 

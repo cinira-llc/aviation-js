@@ -1,6 +1,5 @@
 {
-  "name": "@mattj65817/aviation-js",
-  "version": "1.0.0",
+  "name": "@cinira-llc/aviation-js",
   "description": "Cinira Aviation library for JavaScript",
   "exports": {
     ".": {
@@ -11,7 +10,7 @@
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "repository": {
-    "url": "git+https://github.com/mattj65817/aviation-js.git"
+    "url": "git+https://github.com/cinira-llc/aviation-js.git"
   },
   "scripts": {
     "build": "tsc -p ./tsconfig.json && tsc -p ./tsconfig-cjs.json && tsc -p ./tsconfig-types.json",
@@ -29,11 +28,11 @@
   "author": "Matt Jensen <mjensen65816@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "@mattj65817/util-js": "^1.5.17",
+    "@cinira-llc/util-js": "^1.5.19",
     "robust-point-in-polygon": "^1.0.3"
   },
   "devDependencies": {
-    "@mattj65817/test-js": "^1.1.4",
+    "@cinira-llc/test-js": "^1.1.5",
     "@types/jest": "^29.5.12",
     "@types/lodash": "^4.17.0",
     "@types/robust-point-in-polygon": "^1.0.4",

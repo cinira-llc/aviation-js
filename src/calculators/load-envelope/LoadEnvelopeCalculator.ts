@@ -1,11 +1,11 @@
 import {freeze} from "immer";
 import _, {Dictionary} from "lodash";
 import classifyPoint from "robust-point-in-polygon";
-import {scaledPath} from "@mattj65817/util-js";
+import {scaledPath} from "@cinira-llc/util-js";
 import {Contour, Scale} from "../../charts";
 import {WpdProject} from "../../web-plot-digitizer";
 
-import type {Path} from "@mattj65817/util-js";
+import type {Path} from "@cinira-llc/util-js";
 import type {UnitRange} from "../../performance/performance-types";
 import type {WpdProjectJson} from "../chase-around/chase-around-types";
 import type {Calculator} from "../calculator-types";

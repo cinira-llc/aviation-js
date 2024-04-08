@@ -1,9 +1,9 @@
 import {freeze} from "immer";
 import _ from "lodash";
-import {cartesianToPolar, polarToCartesian} from "@mattj65817/util-js";
+import {cartesianToPolar, polarToCartesian} from "@cinira-llc/util-js";
 import {Contour, Guide, Scale} from "../charts";
 
-import type {Path, Point} from "@mattj65817/util-js";
+import type {Path, Point} from "@cinira-llc/util-js";
 import type {WpdProjectDef, WpdProjectJson} from "./web-plot-digitizer-types";
 import type {AnyUnit} from "../aviation-types";
 import type {Direction} from "../charts";

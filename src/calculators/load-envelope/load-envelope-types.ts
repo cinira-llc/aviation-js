@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import {Dimensions, isPath, Path, Point} from "@mattj65817/util-js";
+import {Dimensions, isPath, Path, Point} from "@cinira-llc/util-js";
 import type {Direction} from "../../charts";
 import type {PerformanceVariable} from "../../performance";
 import {Calculation, isCalculation} from "../calculator-types";

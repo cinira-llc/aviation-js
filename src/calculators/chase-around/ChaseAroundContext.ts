@@ -2,7 +2,7 @@ import { freeze } from "immer";
 import _ from "lodash";
 import { Contour, Scale } from "../../charts";
 
-import type { Path } from "@mattj65817/util-js";
+import type { Path } from "@cinira-llc/util-js";
 import type { Chase } from "./chase-around-types";
 
 /**
@@ -64,7 +64,7 @@ export class ChaseAroundContext {
             const { path: [start] } = along;
             const top = unresolved.pop()!;
 
-            /* ISS (maybe): https://github.com/mattj65817/aviation-js/issues/2 */
+            /* ISS (maybe): https://github.com/cinira-llc/aviation-js/issues/2 */
             if (!top.contains(start)) {
                 solution.push(top);
                 path.push(_.last(top.path)!);

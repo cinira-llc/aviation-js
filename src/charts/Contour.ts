@@ -1,9 +1,9 @@
 import _ from "lodash";
 import { freeze } from "immer";
-import { intersection, pickAdjacentBy, scaledPath, sortedInterpolate } from "@mattj65817/util-js";
+import { intersection, pickAdjacentBy, scaledPath, sortedInterpolate } from "@cinira-llc/util-js";
 import { Flows } from "./Flows";
 
-import type { Path, Point } from "@mattj65817/util-js";
+import type { Path, Point } from "@cinira-llc/util-js";
 import type { Direction } from ".";
 import type { Flow } from "./Flows";
 

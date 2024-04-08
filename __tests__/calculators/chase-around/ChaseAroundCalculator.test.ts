@@ -3,7 +3,7 @@ import {isChaseAroundCalcJson} from "../../../src/calculators/chase-around/chase
 import {ChaseAroundCalculator} from "../../../src/calculators/chase-around";
 import {isWpdProjectJson} from "../../../src/web-plot-digitizer/web-plot-digitizer-types";
 
-import type {Path} from "@mattj65817/util-js";
+import type {Path} from "@cinira-llc/util-js";
 
 import cruiseAirspeedJson from "./cruise-airspeed.json";
 import cruiseAirspeedProjJson from "./cruise-airspeed.wpd.json";

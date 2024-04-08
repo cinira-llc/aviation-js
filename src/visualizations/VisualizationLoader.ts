@@ -1,11 +1,11 @@
 import {freeze} from "immer";
-import {fetchJson} from "@mattj65817/util-js";
+import {fetchJson} from "@cinira-llc/util-js";
 import {WpdProject} from "../web-plot-digitizer";
 import {HotspotVisualization} from "./hotspot";
 import {isWpdProjectJson} from "../web-plot-digitizer/web-plot-digitizer-types";
 import {isHotspotVisualizationDef, isHotspotVisualizationJson, isVisualizationJson,} from "./visualizations-types";
 
-import type {GuardedJsonLoader} from "@mattj65817/util-js";
+import type {GuardedJsonLoader} from "@cinira-llc/util-js";
 import type {VisualizationDef} from "./visualizations-types";
 
 export class VisualizationLoader {

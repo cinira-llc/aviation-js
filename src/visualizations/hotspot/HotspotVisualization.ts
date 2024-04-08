@@ -1,6 +1,6 @@
 import {freeze} from "immer";
 import _ from "lodash";
-import {scaledPath} from "@mattj65817/util-js";
+import {scaledPath} from "@cinira-llc/util-js";
 import {WpdProject} from "../../web-plot-digitizer";
 import {HotspotVisualizationJson} from "../visualizations-types";
 

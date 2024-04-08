@@ -1,6 +1,6 @@
 import _, {Dictionary} from "lodash";
 
-import type {Path, Point} from "@mattj65817/util-js";
+import type {Path, Point} from "@cinira-llc/util-js";
 
 /**
  * JSON format of a WebPlotDigitizer project file (the subset of it that we care about.)

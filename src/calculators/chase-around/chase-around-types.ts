@@ -1,7 +1,7 @@
 import _ from "lodash";
-import { Dimensions, isPath } from "@mattj65817/util-js";
+import { Dimensions, isPath } from "@cinira-llc/util-js";
 
-import type { Path, Point } from "@mattj65817/util-js";
+import type { Path, Point } from "@cinira-llc/util-js";
 import type { PerformanceVariable } from "../../performance";
 import type { Calculation } from "..";
 import type { EnvironmentVariable } from "../../environment";
